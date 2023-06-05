@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -27,6 +28,9 @@ public class Clientes implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(name = "cpf")
+    private String CPF;
+    
     @Column(name = "nome")
     private String nome;
 
@@ -36,11 +40,10 @@ public class Clientes implements Serializable {
     @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "endereco")
-    private String endereco;
-
-    @Column(name = "cpf")
-    private String CPF;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Enderecos endereco;
 
     @Column(name = "senha")
     private String senha;

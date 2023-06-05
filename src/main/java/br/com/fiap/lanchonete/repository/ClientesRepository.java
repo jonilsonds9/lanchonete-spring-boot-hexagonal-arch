@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import br.com.fiap.lanchonete.entity.Clientes;
 
 @Repository("clientePostgresRepository")
-@Qualifier("ClientePostgresRepository")
+@Qualifier("clientePostgresRepository")
 public interface ClientesRepository extends JpaRepository<Clientes, Long> {
 
 	public Clientes findByCPF(String cpf);

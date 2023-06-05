@@ -13,22 +13,24 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "telefone")
-public class Telefones implements Serializable {
+@Table(name = "logradouro")
+public class Logradouro implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    
-    private String numero;
-    
-    private String tipo;
 
+    @Column(name = "nome")
+    private String nome;
+
+
+    public Logradouro(String nome) {
+		this.nome = nome;
+	}
 }

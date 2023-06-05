@@ -45,10 +45,6 @@ public class ProdutosDto {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime dataCadastro;
 
-	@Past(message = "A data e hora devem ser anteriores à data e hora atual")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime dataFinalizado;
-
 	private Boolean status;
 
 	public ProdutosDto(Produtos produtos) {
@@ -57,7 +53,6 @@ public class ProdutosDto {
 		this.descricao = produtos.getDescricao();
 		this.preco = produtos.getPreco();
 		this.dataCadastro = produtos.getDataCadastro();
-		this.dataFinalizado = produtos.getDataFinalizado();
 		this.status = produtos.getStatus();
 	}
 
@@ -72,7 +67,6 @@ public class ProdutosDto {
 		produto.setDescricao(this.descricao);
 		produto.setDataCadastro(this.dataCadastro);
 		produto.setPreco(this.preco);
-		produto.setDataFinalizado(this.getDataFinalizado());
 		produto.setStatus(this.status);
         return produto;
 	}

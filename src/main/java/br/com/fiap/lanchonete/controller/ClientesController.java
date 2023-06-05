@@ -1,8 +1,5 @@
 package br.com.fiap.lanchonete.controller;
 
-import java.util.List;
-import java.util.Objects;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,80 +24,52 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/clientes")
 public class ClientesController {
 
-    @Autowired
-    private ClientesService clienteService;
+	@Autowired
+	private ClientesService clienteService;
 
-    @GetMapping()
-    public ResponseEntity<Object> listar() {
-        log.info("Pesquisar todos os clientes");
-        try {
-            List<ClientesDto> resultado = clienteService.findAll();
+	@GetMapping()
+	public ResponseEntity<Object> listar() {
+		log.info("Pesquisar todos os clientes");
+		try {
+			return clienteService.findAll();
+		} catch (RuntimeException e) {
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 
-            if (resultado.isEmpty()) {
-                return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
-            }
+		}
+	}
 
-            return ResponseHandler.generateResponse("Lista encontrada", HttpStatus.OK, resultado);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+	@PostMapping("")
+	public ResponseEntity<Object> incluir(@Valid @RequestBody ClientesDto clienteDtoRequest) {
+		log.info("Incluir cliente");
+		try {
+			return clienteService.incluir(clienteDtoRequest);
+		} catch (RuntimeException e) {
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+		}
+	}
 
-        }
-    }
+	@PutMapping("")
+	public ResponseEntity<Object> alterar(@Valid @RequestBody ClientesDto clienteDtoRequest) {
+		log.info("Alterar cliente");
+		try {
+			return clienteService.alterar(clienteDtoRequest);
+		} catch (RuntimeException e) {
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+		}
+	}
 
-    @PostMapping("")
-    public ResponseEntity<Object> incluir(@Valid @RequestBody ClientesDto clienteDtoRequest) {
-        log.info("Incluir cliente");
-        try {
-            ClientesDto clienteDto = clienteService.incluir(clienteDtoRequest);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
+		log.info("Excluir cliente");
+		try {
+			return clienteService.excluir(id);
+		} catch (RuntimeException e) {
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+		}
+	}
 
-            if (Objects.isNull(clienteDto)) {
-                return ResponseHandler.generateResponse("Não foi possível incluir o cliente.", HttpStatus.BAD_REQUEST, clienteDto);
-            }
-
-            return ResponseHandler.generateResponse("Cliente incluído com sucesso.", HttpStatus.CREATED, clienteDto);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-    }
-
-    @PutMapping("")
-    public ResponseEntity<Object> alterar(@Valid @RequestBody ClientesDto clienteDtoRequest) {
-        log.info("Alterar cliente");
-        try {
-            ClientesDto clienteDto = clienteService.alterar(clienteDtoRequest);
-
-            if (Objects.isNull(clienteDto)) {
-                return ResponseHandler.generateResponse("Não foi possível alterar o cliente.", HttpStatus.BAD_REQUEST, clienteDto);
-            }
-
-            return ResponseHandler.generateResponse("Cliente alterado com sucesso.", HttpStatus.OK, clienteDto);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
-        log.info("Excluir cliente");
-        try {
-            clienteService.excluir(id);
-            return ResponseHandler.generateResponse("Cliente excluído com sucesso.", HttpStatus.OK, null);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-    }
-
-
-    @GetMapping("/{cpf}")
-    public ResponseEntity<Object> pesquisar(@PathVariable("cpf") String cpf) {
-        ClientesDto clienteDto = clienteService.findByCPF(cpf);
-
-        if (Objects.isNull(clienteDto)) {
-            return new ResponseEntity<>("Cliente não encontrado.", HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(clienteDto, HttpStatus.OK);
-    }
-
-
+	@GetMapping("/{cpf}")
+	public ResponseEntity<Object> pesquisar(@PathVariable("cpf") String cpf) {
+		return clienteService.findByCPF(cpf);
+	}
 }

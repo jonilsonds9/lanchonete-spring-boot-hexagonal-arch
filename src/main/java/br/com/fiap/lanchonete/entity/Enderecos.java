@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -26,9 +27,28 @@ public class Enderecos implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     
-    private String rua;
+    @JoinColumn(name = "logradouro")
+    private Logradouro logradouro;
+    
+    @Column(name = "endereco")
+    private String endereco;
+    
+    @Column(name = "numero")
+    private String numero;
+    
+    @Column(name = "complemento")
+    private String complemento;
+    
+    @Column(name = "bairro")
+    private String bairro;
+    
+    @Column(name = "cidade")
     private String cidade;
+    
+    @Column(name = "estado")
     private String estado;
+    
+    @Column(name = "cep")
     private String cep;
 
 }

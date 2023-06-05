@@ -20,6 +20,10 @@ public class ClientesDto {
 	
     private Long id;
 
+    @NotBlank(message = "O cpf é obrigatório")
+    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "Formato de CPF inválido. Use o formato 123.456.789-00")
+    private String cpf;
+    
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 3, max = 50, message = "O nome deve ter entre 3 e 50 caracteres")
     @Pattern(regexp = "^[A-Za-z\\s]*$", message = "O nome não pode conter caracteres especiais")
@@ -33,18 +37,7 @@ public class ClientesDto {
     @Pattern(regexp = "\\([0-9]{2}\\)\\s[0-9]{4,5}-[0-9]{4}", message = "Formato de telefone inválido. Use o formato (99) 99999-9999")
     private String telefone;
 
-    @NotBlank(message = "O endereço é obrigatório")
-    private String endereco;
-
-    @NotBlank(message = "O CEP é obrigatório")
-    @Pattern(regexp = "\\d{5}-\\d{3}", message = "Formato de CEP inválido. Use o formato 12345-678")
-    private String cep;
-
-    @NotBlank(message = "O cpf é obrigatório")
-    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "Formato de CPF inválido. Use o formato 123.456.789-00")
-    private String cpf;
-
-    private String senha;
+    private EnderecoDto endereco;
 
     @NotBlank(message = "A data de nascimento é obrigatória")
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "A data de nascimento deve estar no formato yyyy-MM-dd")
@@ -56,14 +49,13 @@ public class ClientesDto {
     
     private Boolean ativo;
 
-    public ClientesDto(Clientes cliente) {
+    public ClientesDto(Clientes cliente) {    	
         this.id = cliente.getId();
         this.nome = cliente.getNome();
         this.email = cliente.getEmail();
         this.telefone = cliente.getTelefone();
-        this.endereco = cliente.getEndereco();
+        this.endereco = new EnderecoDto(cliente.getEndereco());
         this.cpf = cliente.getCPF();
-        this.senha = cliente.getSenha();
         this.dataNascimento = Util.dataToString(cliente.getDataNascimento());
         this.dataCadastro = cliente.getDataCadastro();
         this.dataAtualizacao = cliente.getDataAtualizacao();
@@ -81,9 +73,8 @@ public class ClientesDto {
         cliente.setNome(this.nome);
         cliente.setEmail(this.email);
         cliente.setTelefone(this.telefone);
-        cliente.setEndereco(this.endereco);
+        cliente.setEndereco( EnderecoDto.toEntity(this.endereco));
         cliente.setCPF(this.cpf);
-        cliente.setSenha(this.senha);
         cliente.setDataNascimento(Util.stringToData(this.dataNascimento));
         cliente.setDataCadastro(this.dataCadastro);
         cliente.setDataAtualizacao(this.dataAtualizacao);
