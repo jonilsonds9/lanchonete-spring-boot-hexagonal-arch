@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "categorias")
 public class Categorias implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id")
@@ -29,4 +29,7 @@ public class Categorias implements Serializable {
     @Column(name = "nome")
     private String nome;
 
+    public Categorias(String nome) {
+    	this.nome = nome;
+	}
 }

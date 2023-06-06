@@ -10,4 +10,6 @@ import br.com.fiap.lanchonete.entity.Categorias;
 @Qualifier("categoriaPostgresRepository")
 public interface CategoriasRepository extends JpaRepository<Categorias, Long> {
 
+	public Categorias findByNome(String string);
+
 }

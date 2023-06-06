@@ -16,10 +16,6 @@ import lombok.NoArgsConstructor;
 public class CategoriasDto {
 
     private Long id;
-
-    @NotBlank(message = "O cpf é obrigatório")
-    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "Formato de CPF inválido. Use o formato 123.456.789-00")
-    private String cpf;
     
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 3, max = 50, message = "O nome deve ter entre 3 e 50 caracteres")

@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -30,6 +31,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "produtos")
 public class Produtos implements Serializable {
+
+
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,4 +64,13 @@ public class Produtos implements Serializable {
     @JoinColumn(name = "categorias")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Categorias categorias;
+    
+	public Produtos(String nome, String descricao, BigDecimal valor, LocalDateTime dataCadastro, boolean status, Categorias categoria) {
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = valor;
+		this.dataCadastro = dataCadastro;
+		this.status = status;
+		this.categorias = categoria;
+	}
 }

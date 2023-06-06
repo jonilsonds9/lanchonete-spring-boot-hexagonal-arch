@@ -1,7 +1,6 @@
 package br.com.fiap.lanchonete.dtos;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +14,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.fiap.lanchonete.Util;
-import br.com.fiap.lanchonete.entity.Clientes;
+import br.com.fiap.lanchonete.entity.Categorias;
 import br.com.fiap.lanchonete.entity.Produtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +44,9 @@ public class ProdutosDto {
 	private LocalDateTime dataCadastro;
 
 	private Boolean status;
+	
+	private Categorias categorias;
+	
 
 	public ProdutosDto(Produtos produtos) {
 		this.id = produtos.getId();
@@ -54,6 +55,7 @@ public class ProdutosDto {
 		this.preco = produtos.getPreco();
 		this.dataCadastro = produtos.getDataCadastro();
 		this.status = produtos.getStatus();
+		this.categorias = produtos.getCategorias();
 	}
 
 	public static List<ProdutosDto> toDto(List<Produtos> produtos) {
@@ -68,6 +70,7 @@ public class ProdutosDto {
 		produto.setDataCadastro(this.dataCadastro);
 		produto.setPreco(this.preco);
 		produto.setStatus(this.status);
+		produto.setCategorias(this.categorias);
         return produto;
 	}
 
