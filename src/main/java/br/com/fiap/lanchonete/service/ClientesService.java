@@ -1,20 +1,20 @@
 package br.com.fiap.lanchonete.service;
 
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import br.com.fiap.lanchonete.dtos.ClientesDto;
 
 @Service
 public interface ClientesService {
-    
-	public ResponseEntity<Object> findAll();
+    public List<ClientesDto> findAll();
 
-    public ResponseEntity<Object> incluir(ClientesDto clienteDtoRequest );
+    public ClientesDto incluir(ClientesDto clienteDtoRequest );
 
-    public ResponseEntity<Object> alterar(ClientesDto clienteDtoRequest);
+    public ClientesDto alterar(ClientesDto clienteDtoRequest);
 
-    public ResponseEntity<Object> excluir(Long id);
+    public void excluir(Long id);
 
-	public ResponseEntity<Object> findByCPF(String cpf);
+	public ClientesDto findByCPF(String cpf);
 }

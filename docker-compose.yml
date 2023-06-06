@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  database:
+    image: oscarfonts/h2
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./data:/opt/h2-data
+    environment:
+      - H2_OPTIONS=-ifNotExists
+      
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - database
