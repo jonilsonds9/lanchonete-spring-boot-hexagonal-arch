@@ -1,22 +1,21 @@
 package br.com.fiap.lanchonete.config;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.fiap.lanchonete.entity.Categorias;
-import br.com.fiap.lanchonete.entity.Clientes;
-import br.com.fiap.lanchonete.entity.Logradouro;
-import br.com.fiap.lanchonete.entity.Produtos;
-import br.com.fiap.lanchonete.repository.CategoriasRepository;
-import br.com.fiap.lanchonete.repository.ClientesRepository;
-import br.com.fiap.lanchonete.repository.LogradouroRepository;
-import br.com.fiap.lanchonete.repository.PedidosRepository;
-import br.com.fiap.lanchonete.repository.ProdutosRepository;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEntity;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ClienteEntity;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.LogradouroEntity;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ProdutoEntity;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringCategoriasRepository;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringClientesRepository;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringLogradouroRepository;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringPedidosRepository;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringProdutoRepository;
 import br.com.fiap.lanchonete.utils.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,42 +24,41 @@ import lombok.extern.slf4j.Slf4j;
 public class DataInitializationConfig {
 
     @Autowired
-    private LogradouroRepository logradouroRepository;
+    private SpringLogradouroRepository logradouroRepository;
     
     @Autowired
-    private ClientesRepository clientesRepository;
+    private SpringClientesRepository clientesRepository;
     
     @Autowired 
-    private CategoriasRepository categoriasRepository;
+    private SpringCategoriasRepository categoriasRepository;
     
     @Autowired
-    private ProdutosRepository produtosRepository;
-    
-    
+    private SpringProdutoRepository produtosRepository;
+
     @Autowired
-    private PedidosRepository pedidosRepository;
+    private SpringPedidosRepository pedidosRepository;
     
 
     @Bean
     public CommandLineRunner dataInitialization() {
         return args -> {
         	
-        	List<Logradouro> logradouros = logradouroRepository.findAll();
+        	List<LogradouroEntity> logradouros = logradouroRepository.findAll();
         	if (logradouros.size() == 0) {
         		log.info("******* Inserir logradouro na base de dados*******");
         		logradouroRepository.saveAll(HelperUtil.getLogradouro());
         	}
         	
-        	Logradouro logradouro = logradouroRepository.findByNome("Rua");
-        	Clientes cliente =  clientesRepository.save(HelperUtil.getCliente(logradouro));
+        	LogradouroEntity logradouro = logradouroRepository.findByNome("Rua");
+        	ClienteEntity cliente =  clientesRepository.save(HelperUtil.getCliente(logradouro));
         	        	
-        	List<Categorias> categorias = categoriasRepository.findAll();
+        	List<CategoriaEntity> categorias = categoriasRepository.findAll();
         	if (categorias.size() == 0) {
         		log.info("******* Inserir categoria na base de dados*******");
         		categoriasRepository.saveAll(HelperUtil.getCategoria());
         	}
         	      
-        	List<Produtos> produtos = produtosRepository.findAll();
+        	List<ProdutoEntity> produtos = produtosRepository.findAll();
         	if (produtos.size() == 0) {
         		
         		log.info("******* Inserir produtos Batata frita na base de dados*******");
@@ -86,7 +84,7 @@ public class DataInitializationConfig {
        		
         	}
         	
-        	List<Produtos> produto = produtosRepository.findByNome("Batatas Fritas Com Queijo E Bacon");
+        	List<ProdutoEntity> produto = produtosRepository.findByNome("Batatas Fritas Com Queijo E Bacon");
         	
         	pedidosRepository.save(HelperUtil.getPedido(cliente, produto));
         	

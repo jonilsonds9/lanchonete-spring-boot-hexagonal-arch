@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @Configuration
-@EnableJpaRepositories(basePackages = "br.com.fiap.lanchonete.repository")
+@EnableJpaRepositories(basePackages = "br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories")
 @ComponentScan("br.com.fiap.lanchonete")
 public class LanchoneteApplication {
 

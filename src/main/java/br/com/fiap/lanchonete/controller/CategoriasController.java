@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.lanchonete.dtos.CategoriasDto;
+import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.portas.interfaces.CategoriaServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
-import br.com.fiap.lanchonete.service.CategoriasService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,13 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoriasController {
 
     @Autowired
-    private CategoriasService categoriaService;
+    private CategoriaServicePort categoriaServicePort;
 
     @GetMapping()
     public ResponseEntity<Object> listar() {
         log.info("Pesquisar todos os categorias");
         try {
-            List<CategoriasDto> resultado = categoriaService.findAll();
+            List<CategoriaDto> resultado = categoriaServicePort.buscarTodos();
 
             if (resultado.isEmpty()) {
                 return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
@@ -48,10 +48,10 @@ public class CategoriasController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> incluir(@Valid @RequestBody CategoriasDto categoriaDtoRequest) {
+    public ResponseEntity<Object> incluir(@Valid @RequestBody CategoriaDto categoriaDtoRequest) {
         log.info("Incluir categoria");
         try {
-            CategoriasDto categoriaDto = categoriaService.incluir(categoriaDtoRequest);
+            CategoriaDto categoriaDto = categoriaServicePort.incluir(categoriaDtoRequest);
 
             if (Objects.isNull(categoriaDto)) {
                 return ResponseHandler.generateResponse("Não foi possível incluir o categoria.", HttpStatus.BAD_REQUEST, categoriaDto);
@@ -64,10 +64,10 @@ public class CategoriasController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Object> alterar(@Valid @RequestBody CategoriasDto categoriaDtoRequest) {
+    public ResponseEntity<Object> alterar(@Valid @RequestBody CategoriaDto categoriaDtoRequest) {
         log.info("Alterar categoria");
         try {
-            CategoriasDto categoriaDto = categoriaService.alterar(categoriaDtoRequest);
+            CategoriaDto categoriaDto = categoriaServicePort.alterar(categoriaDtoRequest);
 
             if (Objects.isNull(categoriaDto)) {
                 return ResponseHandler.generateResponse("Não foi possível alterar o categoria.", HttpStatus.BAD_REQUEST, categoriaDto);
@@ -83,7 +83,7 @@ public class CategoriasController {
     public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
         log.info("Excluir categoria");
         try {
-            categoriaService.excluir(id);
+        	categoriaServicePort.excluir(id);
             return ResponseHandler.generateResponse("Categoria excluído com sucesso.", HttpStatus.OK, null);
         } catch (RuntimeException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -93,7 +93,7 @@ public class CategoriasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> pesquisar(@PathVariable("id") Long id) {
-        CategoriasDto categoriaDto = categoriaService.findById(id);
+        CategoriaDto categoriaDto = categoriaServicePort.buscarPorId(id);
 
         if (Objects.isNull(categoriaDto)) {
             return new ResponseEntity<>("Categoria não encontrado.", HttpStatus.NOT_FOUND);

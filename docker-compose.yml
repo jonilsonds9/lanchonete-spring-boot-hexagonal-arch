@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  database:
-    image: oscarfonts/h2
-    ports:
-      - "8082:8082"
-    volumes:
-      - ./data:/opt/h2-data
+  database_postgres:
+    image: postgres
+    restart: always
     environment:
-      - H2_OPTIONS=-ifNotExists
-      
+      POSTGRES_PASSWORD: pgpassword
+
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - POSTGRES_HOST=database_postgres
+      - POSTGRES_PASSWORD=pgpassword
     depends_on:
-      - database
+      - database_postgres

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.lanchonete.dtos.ClientesDto;
+import br.com.fiap.lanchonete.dominio.dtos.ClientesDto;
+import br.com.fiap.lanchonete.dominio.portas.interfaces.ClienteServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
-import br.com.fiap.lanchonete.service.ClientesService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,13 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientesController {
 
     @Autowired
-    private ClientesService clienteService;
+    private ClienteServicePort clienteServicePort;
 
     @GetMapping()
     public ResponseEntity<Object> listar() {
         log.info("Pesquisar todos os clientes");
         try {
-            List<ClientesDto> resultado = clienteService.findAll();
+            List<ClientesDto> resultado = clienteServicePort.buscarTodos();
 
             if (resultado.isEmpty()) {
                 return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
@@ -51,7 +51,7 @@ public class ClientesController {
     public ResponseEntity<Object> incluir(@Valid @RequestBody ClientesDto clienteDtoRequest) {
         log.info("Incluir cliente");
         try {
-            ClientesDto clienteDto = clienteService.incluir(clienteDtoRequest);
+            ClientesDto clienteDto = clienteServicePort.incluir(clienteDtoRequest);
 
             if (Objects.isNull(clienteDto)) {
                 return ResponseHandler.generateResponse("Não foi possível incluir o cliente.", HttpStatus.BAD_REQUEST, clienteDto);
@@ -67,7 +67,7 @@ public class ClientesController {
     public ResponseEntity<Object> alterar(@Valid @RequestBody ClientesDto clienteDtoRequest) {
         log.info("Alterar cliente");
         try {
-            ClientesDto clienteDto = clienteService.alterar(clienteDtoRequest);
+            ClientesDto clienteDto = clienteServicePort.alterar(clienteDtoRequest);
 
             if (Objects.isNull(clienteDto)) {
                 return ResponseHandler.generateResponse("Não foi possível alterar o cliente.", HttpStatus.BAD_REQUEST, clienteDto);
@@ -83,7 +83,7 @@ public class ClientesController {
     public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
         log.info("Excluir cliente");
         try {
-            clienteService.excluir(id);
+        	clienteServicePort.excluir(id);
             return ResponseHandler.generateResponse("Cliente excluído com sucesso.", HttpStatus.OK, null);
         } catch (RuntimeException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -93,7 +93,7 @@ public class ClientesController {
 
     @GetMapping("/{cpf}")
     public ResponseEntity<Object> pesquisar(@PathVariable("cpf") String cpf) {
-        ClientesDto clienteDto = clienteService.findByCPF(cpf);
+        ClientesDto clienteDto = clienteServicePort.BuscarPorCPF(cpf);
 
         if (Objects.isNull(clienteDto)) {
             return new ResponseEntity<>("Cliente não encontrado.", HttpStatus.NOT_FOUND);

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.lanchonete.dtos.ProdutosDto;
+import br.com.fiap.lanchonete.dominio.dtos.ProdutosDto;
+import br.com.fiap.lanchonete.dominio.portas.interfaces.ProdutoServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
-import br.com.fiap.lanchonete.service.ProdutosService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,13 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ProdutosController {
 
 	@Autowired
-	private ProdutosService produtosService;
-
+	private ProdutoServicePort produtoServicePort;
+	
 	@GetMapping()
 	public ResponseEntity<Object> listar() {
 		log.info("Pesquisar todos os produtos");
 		try {
-			List<ProdutosDto> resultado = produtosService.findAll();
+			List<ProdutosDto> resultado = produtoServicePort.findAll();
 
 			if (resultado.isEmpty()) {
 				return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
@@ -51,7 +51,7 @@ public class ProdutosController {
 	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
 		log.info("Incluir produtos");
 		try {
-			ProdutosDto produtosDto = produtosService.incluir(produtosDtoRequest);
+			ProdutosDto produtosDto = produtoServicePort.incluir(produtosDtoRequest);
 
 			if (Objects.isNull(produtosDto)) {
 				return ResponseHandler.generateResponse("Não foi possível incluir o produtos.", HttpStatus.BAD_REQUEST,
@@ -68,7 +68,7 @@ public class ProdutosController {
 	public ResponseEntity<Object> alterar(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
 		log.info("Alterar produtos");
 		try {
-			ProdutosDto produtosDto = produtosService.alterar(produtosDtoRequest);
+			ProdutosDto produtosDto = produtoServicePort.alterar(produtosDtoRequest);
 
 			if (Objects.isNull(produtosDto)) {
 				return ResponseHandler.generateResponse("Não foi possível alterar o produtos.", HttpStatus.BAD_REQUEST,
@@ -85,7 +85,7 @@ public class ProdutosController {
 	public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
 		log.info("Excluir produtos");
 		try {
-			produtosService.excluir(id);
+			produtoServicePort.excluir(id);
 			return ResponseHandler.generateResponse("Produto excluído com sucesso.", HttpStatus.OK, null);
 		} catch (RuntimeException e) {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -94,7 +94,7 @@ public class ProdutosController {
 
 	@GetMapping("/{categoria}")
 	public ResponseEntity<Object> pesquisar(@PathVariable("categoria") String categoria) {
-		List<ProdutosDto> produtosDto = produtosService.findByCategoria(categoria);
+		List<ProdutosDto> produtosDto = produtoServicePort.buscarPorCategoria(categoria);
 
 		if (produtosDto.isEmpty()) {
 			return new ResponseEntity<>("Produto não encontrado.", HttpStatus.NOT_FOUND);

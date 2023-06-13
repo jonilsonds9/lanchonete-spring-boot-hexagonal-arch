@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.lanchonete.dtos.PedidosDto;
+import br.com.fiap.lanchonete.dominio.dtos.PedidoDto;
+import br.com.fiap.lanchonete.dominio.portas.interfaces.PedidoServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
-import br.com.fiap.lanchonete.service.PedidosService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,13 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class PedidosController {
 
 	@Autowired
-	private PedidosService pedidosService;
+	private PedidoServicePort pedidoServicePort;
 
 	@GetMapping()
 	public ResponseEntity<Object> listar() {
 		log.info("Pesquisar todos os pedidos");
 		try {
-			List<PedidosDto> resultado = pedidosService.findAll();
+			List<PedidoDto> resultado = pedidoServicePort.buscarTodos();
 
 			if (resultado.isEmpty()) {
 				return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
@@ -47,48 +47,4 @@ public class PedidosController {
 		}
 	}
 
-	@PostMapping("")
-	public ResponseEntity<Object> incluir(@Valid @RequestBody PedidosDto pedidosDtoRequest) {
-		log.info("Incluir pedidos");
-		try {
-			PedidosDto pedidosDto = pedidosService.incluir(pedidosDtoRequest);
-
-			if (Objects.isNull(pedidosDto)) {
-				return ResponseHandler.generateResponse("Não foi possível incluir o pedidos.", HttpStatus.BAD_REQUEST,
-						pedidosDto);
-			}
-
-			return ResponseHandler.generateResponse("Pedido incluído com sucesso.", HttpStatus.CREATED, pedidosDto);
-		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-		}
-	}
-
-	@PutMapping("")
-	public ResponseEntity<Object> alterar(@Valid @RequestBody PedidosDto pedidosDtoRequest) {
-		log.info("Alterar pedidos");
-		try {
-			PedidosDto pedidosDto = pedidosService.alterar(pedidosDtoRequest);
-
-			if (Objects.isNull(pedidosDto)) {
-				return ResponseHandler.generateResponse("Não foi possível alterar o pedidos.", HttpStatus.BAD_REQUEST,
-						pedidosDto);
-			}
-
-			return ResponseHandler.generateResponse("Pedido alterado com sucesso.", HttpStatus.OK, pedidosDto);
-		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-		}
-	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
-		log.info("Excluir pedidos");
-		try {
-			pedidosService.excluir(id);
-			return ResponseHandler.generateResponse("Pedido excluído com sucesso.", HttpStatus.OK, null);
-		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-		}
-	}
 }
