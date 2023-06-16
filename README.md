@@ -4,7 +4,7 @@
 *** Template baseado em https://github.com/othneildrew/Best-README-Template 
 -->
 
-[![Contributors][contributors-shield]][contributors-url]
+![GitHub contributors](https://img.shields.io/github/contributors/ValSousa/lanchonete?style=for-the-badge)
 ![GitHub top language](https://img.shields.io/github/languages/top/ValSousa/lanchonete?style=for-the-badge)
 ![spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
