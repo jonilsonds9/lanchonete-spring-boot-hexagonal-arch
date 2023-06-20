@@ -85,20 +85,23 @@ A instalação é bem simples, siga as seguintes etapas:
 <!-- EXEMPLOS DE USO -->
 ## Exemplos de uso
 
-### Para acessar o documento swagger
-	http://localhost:8081/fiap/swagger-ui.html
+### Para acessar o Swagger UI
+	http://localhost:8081/swagger-ui.html
+
+### Para acessar a documentação da API (JSON)
+    http://localhost:8081/v3/api-docs
 
 
 - Listar todos os clientes...
 
 ```json
-GET http://localhost:8081/fiap/api/clientes
+GET http://localhost:8081/api/clientes
 ```
 
 - Incluir cliente
 
 ```json
-POST http://localhost:8081/fiap/api/clientes
+POST http://localhost:8081/api/clientes
 {
     "cpf": "123.456.789-01",
     "nome": "testefdg",
@@ -124,7 +127,7 @@ POST http://localhost:8081/fiap/api/clientes
 - Alterar cliente
 
 ```json
-PUT http://localhost:8081/fiap/api/clientes
+PUT http://localhost:8081/api/clientes
 {
     "cpf": "123.456.789-01",
     "nome": "testefdg",
@@ -150,13 +153,13 @@ PUT http://localhost:8081/fiap/api/clientes
 - Excluir cliente
 
 ```json
-DELETE http://localhost:8081/fiap/api/clientes/1
+DELETE http://localhost:8081/api/clientes/1
 ```
 
 - Pesquiar cliente por CPF
 
 ```json
-GET http://localhost:8081/fiap/api/clientes/1
+GET http://localhost:8081/api/clientes/1
 ```
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
@@ -168,6 +171,6 @@ GET http://localhost:8081/fiap/api/clientes/1
 
 - [x] Começando o projeto
 - [x] Dockerização
-- [ ] ...
+- [x] Documentação
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
