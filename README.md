@@ -91,6 +91,8 @@ A instalação é bem simples, siga as seguintes etapas:
 ### Para acessar a documentação da API (JSON)
     http://localhost:8081/v3/api-docs
 
+### Health Check
+    http://localhost:8081/actuator/health
 
 - Listar todos os clientes...
 
