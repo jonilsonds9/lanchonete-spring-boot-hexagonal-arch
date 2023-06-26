@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEntity;
 import lombok.Data;
 
@@ -38,8 +39,13 @@ public class Categoria {
 		this.nome = categoriaEntity.getNome();
 	}
 
+	// TODO: Remover depois de migrar
 	public static CategoriaDto toCategoriaDto(Categoria categoria) {
 		return new CategoriaDto(categoria.getId(), categoria.getNome());
+	}
+
+	public CategoriaResponseDto toCategoriaResponseDto() {
+		return new CategoriaResponseDto(this.id, this.nome);
 	}
 
 	public static List<Categoria> toCategorias(List<CategoriaEntity> categoriaEntities) {

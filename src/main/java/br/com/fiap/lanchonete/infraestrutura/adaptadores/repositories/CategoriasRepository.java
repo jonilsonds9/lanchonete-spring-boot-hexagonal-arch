@@ -21,7 +21,7 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 	@Override
 	public List<Categoria> buscarTodos() {
 		List<CategoriaEntity> categoriaEntities = this.springCategoriasRepository.findAll();
-		return Categoria.toCategorias(categoriaEntities); 
+		return categoriaEntities.stream().map(Categoria::new).toList();
 	}
 
 	@Override

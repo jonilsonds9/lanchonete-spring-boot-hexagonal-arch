@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.controller;
 
 import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.CategoriaServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class CategoriasController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoriaDto>> listar() {
-        List<CategoriaDto> resultado = categoriaServicePort.buscarTodos();
+    public ResponseEntity<List<CategoriaResponseDto>> listar() {
+        List<CategoriaResponseDto> resultado = categoriaServicePort.buscarTodos();
 
         if (resultado.isEmpty()) {
             return ResponseEntity.noContent().build();

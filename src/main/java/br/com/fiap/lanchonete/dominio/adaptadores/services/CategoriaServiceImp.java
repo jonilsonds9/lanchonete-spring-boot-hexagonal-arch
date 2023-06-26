@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import br.com.fiap.lanchonete.dominio.Categoria;
 import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.CategoriaServicePort;
 import br.com.fiap.lanchonete.dominio.portas.repositories.CategoriaRepositoryPort;
 
@@ -18,9 +19,9 @@ public class CategoriaServiceImp implements CategoriaServicePort {
     }
 
 	@Override
-	public List<CategoriaDto> buscarTodos() {
+	public List<CategoriaResponseDto> buscarTodos() {
         List<Categoria> categorias = this.categoriaRepositoryPort.buscarTodos();
-        return categorias.stream().map(Categoria::toCategoriaDto).collect(Collectors.toList());
+		return categorias.stream().map(Categoria::toCategoriaResponseDto).collect(Collectors.toList());
 	}
 
 	@Override
