@@ -26,9 +26,10 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 	}
 
 	@Override
-	public Categoria incluir(Categoria categoria) {
-		CategoriaEntity entity = new CategoriaEntity(categoria.getNome());
-		return new Categoria(this.springCategoriasRepository.save(entity));
+	public Categoria adicionar(Categoria categoria) {
+		CategoriaEntity entity = new CategoriaEntity(categoria);
+		CategoriaEntity entitySaved = this.springCategoriasRepository.save(entity);
+		return new Categoria(entitySaved);
 	}
 
 	@Override

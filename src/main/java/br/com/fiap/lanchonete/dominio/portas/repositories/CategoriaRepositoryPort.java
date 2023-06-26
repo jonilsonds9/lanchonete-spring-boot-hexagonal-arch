@@ -11,7 +11,7 @@ public interface CategoriaRepositoryPort {
 
 	public Optional<Categoria> buscarPorId(Long id);
 
-	public Categoria incluir(Categoria categoria);
+	public Categoria adicionar(Categoria categoria);
 
 	public Categoria alterar(Categoria categoria);
 

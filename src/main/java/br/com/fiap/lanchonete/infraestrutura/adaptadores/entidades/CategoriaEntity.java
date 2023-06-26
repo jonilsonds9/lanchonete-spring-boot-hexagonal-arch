@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.com.fiap.lanchonete.dominio.Categoria;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,8 @@ public class CategoriaEntity implements Serializable {
     public CategoriaEntity(String nome) {
     	this.nome = nome;
 	}
+
+    public CategoriaEntity(Categoria categoria) {
+        this(categoria.getNome());
+    }
 }

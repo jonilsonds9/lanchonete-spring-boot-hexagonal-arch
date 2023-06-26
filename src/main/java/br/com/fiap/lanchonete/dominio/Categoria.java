@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaRequestDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEntity;
 import lombok.Data;
@@ -19,7 +20,15 @@ public class Categoria {
         this.id = id;
         this.nome = nome;
     }
-    
+
+	public Categoria(String nome) {
+		this.nome = nome;
+	}
+
+	public Categoria(CategoriaRequestDto categoriaRequestDto) {
+		this(categoriaRequestDto.nome());
+	}
+
 	public static CategoriaDto toCategoriasDto(Long id, String nome) {
 		return new CategoriaDto(id, nome);
 	}

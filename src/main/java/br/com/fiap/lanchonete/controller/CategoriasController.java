@@ -1,15 +1,19 @@
 package br.com.fiap.lanchonete.controller;
 
 import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaRequestDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.CategoriaServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.function.BinaryOperator;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -39,15 +43,18 @@ public class CategoriasController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> incluir(@Valid @RequestBody CategoriaDto categoriaDtoRequest) {
-        try {
-            CategoriaDto categoriaDto = categoriaServicePort.incluir(categoriaDtoRequest);
+    public ResponseEntity<Object> adicionar(@Valid @RequestBody CategoriaRequestDto categoriaDtoRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
 
-            if (Objects.isNull(categoriaDto)) {
+        try {
+            CategoriaResponseDto categoriaResponseDto = categoriaServicePort.adicionar(categoriaDtoRequest);
+
+            if (Objects.isNull(categoriaResponseDto)) {
                 return ResponseEntity.badRequest().build();
             }
-
-            return ResponseHandler.generateResponse("Categoria incluído com sucesso.", HttpStatus.CREATED, categoriaDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoriaResponseDto);
         } catch (RuntimeException e) {
             return ResponseEntity.internalServerError().build();
         }
