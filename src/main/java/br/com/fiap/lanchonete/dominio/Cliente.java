@@ -1,16 +1,14 @@
 package br.com.fiap.lanchonete.dominio;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.fiap.lanchonete.dominio.dtos.ClientesDto;
 import br.com.fiap.lanchonete.dominio.dtos.EnderecoDto;
 import br.com.fiap.lanchonete.dominio.dtos.LogradouroDto;
-import br.com.fiap.lanchonete.dominio.dtos.ProdutosDto;
 import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ClienteEntity;
-import br.com.fiap.lanchonete.utils.Util;
+import br.com.fiap.lanchonete.utils.DateTimeFormattedUtil;
 import lombok.Data;
 
 @Data
@@ -142,7 +140,7 @@ public class Cliente {
 		this.email = clientesDto.getEmail();
 		this.telefone = clientesDto.getTelefone();
 		this.endereco = endereco;
-		this.dataNascimento = Util.stringToData(clientesDto.getDataNascimento()) ;
+		this.dataNascimento = DateTimeFormattedUtil.stringToData(clientesDto.getDataNascimento()) ;
 		this.dataCadastro = clientesDto.getDataCadastro();
 		this.dataAtualizacao = clientesDto.getDataAtualizacao();
 		this.dataExclusao = clientesDto.getDataExclusao();
