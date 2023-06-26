@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.dominio.adaptadores.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.fiap.lanchonete.dominio.Categoria;
@@ -42,9 +43,8 @@ public class CategoriaServiceImp implements CategoriaServicePort {
 	}
 
 	@Override
-	public CategoriaDto buscarPorId(Long id) {
-		Categoria categoria = this.categoriaRepositoryPort.buscarPorId(id);	
-		return Categoria.toCategoriaDto(categoria);
+	public Optional<CategoriaResponseDto> buscarPorId(Long id) {
+		Optional<Categoria> optionalCategoria = this.categoriaRepositoryPort.buscarPorId(id);
+		return optionalCategoria.map(CategoriaResponseDto::new);
 	}
-
 }

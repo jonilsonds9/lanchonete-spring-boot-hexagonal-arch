@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -43,8 +44,8 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 	}
 
 	@Override
-	public Categoria buscarPorId(Long id) {
-		CategoriaEntity entity = this.springCategoriasRepository.findById(id).get();
-		return new Categoria(entity.getId(), entity.getNome());
+	public Optional<Categoria> buscarPorId(Long id) {
+		Optional<CategoriaEntity> optionalCategoriaEntity = this.springCategoriasRepository.findById(id);
+		return optionalCategoriaEntity.map(Categoria::new);
 	}
 }

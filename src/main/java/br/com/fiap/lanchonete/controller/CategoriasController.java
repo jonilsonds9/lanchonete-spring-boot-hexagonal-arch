@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -34,14 +33,9 @@ public class CategoriasController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDto> pesquisar(@PathVariable("id") Long id) {
-        CategoriaDto categoriaDto = categoriaServicePort.buscarPorId(id);
-
-        if (Objects.isNull(categoriaDto)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(categoriaDto);
+    public ResponseEntity<CategoriaResponseDto> pesquisar(@PathVariable("id") Long id) {
+        Optional<CategoriaResponseDto> optionalCategoriaDto = categoriaServicePort.buscarPorId(id);
+        return optionalCategoriaDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
