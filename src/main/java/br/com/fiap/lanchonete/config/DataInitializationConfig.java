@@ -1,43 +1,36 @@
 package br.com.fiap.lanchonete.config;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.*;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.*;
+import br.com.fiap.lanchonete.utils.HelperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ClienteEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.LogradouroEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ProdutoEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringCategoriasRepository;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringClientesRepository;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringLogradouroRepository;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringPedidosRepository;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories.SpringProdutoRepository;
-import br.com.fiap.lanchonete.utils.HelperUtil;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @Slf4j
 @Configuration
 public class DataInitializationConfig {
 
-    @Autowired
-    private SpringLogradouroRepository logradouroRepository;
-    
-    @Autowired
-    private SpringClientesRepository clientesRepository;
-    
-    @Autowired 
-    private SpringCategoriasRepository categoriasRepository;
-    
-    @Autowired
-    private SpringProdutoRepository produtosRepository;
+    private final SpringLogradouroRepository logradouroRepository;
+    private final SpringClientesRepository clientesRepository;
+    private final SpringCategoriasRepository categoriasRepository;
+    private final SpringProdutoRepository produtosRepository;
+    private final SpringPedidosRepository pedidosRepository;
 
-    @Autowired
-    private SpringPedidosRepository pedidosRepository;
-    
+    public DataInitializationConfig(SpringLogradouroRepository logradouroRepository,
+									SpringClientesRepository clientesRepository,
+									SpringCategoriasRepository categoriasRepository,
+									SpringProdutoRepository produtosRepository,
+									SpringPedidosRepository pedidosRepository) {
+        this.logradouroRepository = logradouroRepository;
+        this.clientesRepository = clientesRepository;
+        this.categoriasRepository = categoriasRepository;
+        this.produtosRepository = produtosRepository;
+        this.pedidosRepository = pedidosRepository;
+    }
 
     @Bean
     public CommandLineRunner dataInitialization() {
