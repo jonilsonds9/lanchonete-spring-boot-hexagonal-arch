@@ -26,14 +26,19 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 	}
 
 	@Override
-	public Categoria adicionar(Categoria categoria) {
-		CategoriaEntity entity = new CategoriaEntity(categoria);
-		CategoriaEntity entitySaved = this.springCategoriasRepository.save(entity);
-		return new Categoria(entitySaved);
+	public Optional<Categoria> buscarPorId(Long id) {
+		Optional<CategoriaEntity> optionalCategoriaEntity = this.springCategoriasRepository.findById(id);
+		return optionalCategoriaEntity.map(Categoria::new);
 	}
 
 	@Override
-	public Categoria alterar(Categoria categoria) {		
+	public Categoria adicionar(Categoria categoria) {
+		CategoriaEntity entity = new CategoriaEntity(categoria);
+		return new Categoria(this.springCategoriasRepository.save(entity));
+	}
+
+	@Override
+	public Categoria alterar(Categoria categoria) {
 		CategoriaEntity entity = new CategoriaEntity(categoria.getId(), categoria.getNome());
 		return new Categoria(this.springCategoriasRepository.save(entity));
 	}
@@ -44,9 +49,4 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 		this.springCategoriasRepository.delete(entity);			
 	}
 
-	@Override
-	public Optional<Categoria> buscarPorId(Long id) {
-		Optional<CategoriaEntity> optionalCategoriaEntity = this.springCategoriasRepository.findById(id);
-		return optionalCategoriaEntity.map(Categoria::new);
-	}
 }

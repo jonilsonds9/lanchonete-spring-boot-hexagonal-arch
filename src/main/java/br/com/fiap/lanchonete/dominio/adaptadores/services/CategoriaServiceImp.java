@@ -1,15 +1,15 @@
 package br.com.fiap.lanchonete.dominio.adaptadores.services;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import br.com.fiap.lanchonete.dominio.Categoria;
-import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaRequestDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.CategoriaServicePort;
 import br.com.fiap.lanchonete.dominio.portas.repositories.CategoriaRepositoryPort;
+import br.com.fiap.lanchonete.exceptions.NotFoundException;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CategoriaServiceImp implements CategoriaServicePort {
 
@@ -40,9 +40,11 @@ public class CategoriaServiceImp implements CategoriaServicePort {
 	}
 
 	@Override
-	public CategoriaDto alterar(CategoriaDto categoriaDto) {
-		Categoria categoria = new Categoria(categoriaDto);
-		return Categoria.toCategoriaDto(this.categoriaRepositoryPort.alterar(categoria));
+	public CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto) {
+		Categoria categoria = this.categoriaRepositoryPort.buscarPorId(id).orElseThrow(NotFoundException::new);
+		categoria.atualizar(categoriaRequestDto);
+		Categoria categoriaAlterada = this.categoriaRepositoryPort.alterar(categoria);
+		return categoriaAlterada.toCategoriaResponseDto();
 	}
 
 	@Override

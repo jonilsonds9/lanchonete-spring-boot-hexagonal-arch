@@ -1,11 +1,10 @@
 package br.com.fiap.lanchonete.dominio.portas.interfaces;
 
-import java.util.List;
-import java.util.Optional;
-
-import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaRequestDto;
 import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface CategoriaServicePort {
 
@@ -15,7 +14,7 @@ public interface CategoriaServicePort {
 
 	public CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto);
 
-	public CategoriaDto alterar(CategoriaDto categoriaDto);
+	public CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto);
 
 	public void excluir(Long id);
 
