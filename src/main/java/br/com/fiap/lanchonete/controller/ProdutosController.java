@@ -1,28 +1,41 @@
 package br.com.fiap.lanchonete.controller;
 
+import java.util.List;
+import java.util.Objects;
+
+import javax.validation.Valid;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.fiap.lanchonete.dominio.dtos.ProdutosDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.ProdutoServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
-
+@Tag(name = "Produtos", description = "API de gerenciamento de produtos")
 @Slf4j
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutosController {
 
-	private final ProdutoServicePort produtoServicePort;
+	@Autowired
+	private ProdutoServicePort produtoServicePort;
 
-	public ProdutosController(ProdutoServicePort produtoServicePort) {
-		this.produtoServicePort = produtoServicePort;
-	}
-
+	@Operation(
+			summary = "Lista todos os produtos",
+			description = "Retorna uma lista de todos os produtos ou uma lista vazia se nenhum produto for encontrado")
 	@GetMapping()
 	public ResponseEntity<Object> listar() {
 		log.info("Pesquisar todos os produtos");
@@ -40,6 +53,9 @@ public class ProdutosController {
 		}
 	}
 
+	@Operation(
+			summary = "Cadastra um novo produto",
+			description = "Faz o cadastro de uma novo produto e retorna o produto em caso de sucesso")
 	@PostMapping("")
 	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
 		log.info("Incluir produtos");
@@ -57,6 +73,9 @@ public class ProdutosController {
 		}
 	}
 
+	@Operation(
+			summary = "Altera um produto existente",
+			description = "Altera um produto já cadastrado no sistema")
 	@PutMapping("")
 	public ResponseEntity<Object> alterar(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
 		log.info("Alterar produtos");
@@ -74,6 +93,9 @@ public class ProdutosController {
 		}
 	}
 
+	@Operation(
+			summary = "Exclui um produto existente",
+			description = "Exclui um produto cadastrado no sistema")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
 		log.info("Excluir produtos");
@@ -85,6 +107,9 @@ public class ProdutosController {
 		}
 	}
 
+	@Operation(
+			summary = "Pesquisa por um produto pelo Id",
+			description = "Retorna um produto pelo Id")
 	@GetMapping("/{categoria}")
 	public ResponseEntity<Object> pesquisar(@PathVariable("categoria") String categoria) {
 		List<ProdutosDto> produtosDto = produtoServicePort.buscarPorCategoria(categoria);

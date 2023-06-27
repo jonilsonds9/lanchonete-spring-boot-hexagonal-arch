@@ -3,6 +3,7 @@ package br.com.fiap.lanchonete.controller;
 import br.com.fiap.lanchonete.dominio.dtos.PedidoDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.PedidoServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Pedidos", description = "API de gerenciamento de pedidos")
 @Slf4j
 @RestController
 @RequestMapping("/api/pedidos")

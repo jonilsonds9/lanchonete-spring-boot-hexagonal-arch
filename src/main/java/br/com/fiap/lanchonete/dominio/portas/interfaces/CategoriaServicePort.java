@@ -1,19 +1,21 @@
 package br.com.fiap.lanchonete.dominio.portas.interfaces;
 
-import java.util.List;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaRequestDto;
+import br.com.fiap.lanchonete.dominio.dtos.categorias.CategoriaResponseDto;
 
-import br.com.fiap.lanchonete.dominio.dtos.CategoriaDto;
+import java.util.List;
+import java.util.Optional;
 
 public interface CategoriaServicePort {
 
-	public List<CategoriaDto> buscarTodos();
+	public List<CategoriaResponseDto> buscarTodos();
 
-	public CategoriaDto incluir(CategoriaDto categoriaDto);
+	public Optional<CategoriaResponseDto> buscarPorId(Long id);
 
-	public CategoriaDto alterar(CategoriaDto categoriaDto);
+	public CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto);
+
+	public CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto);
 
 	public void excluir(Long id);
-
-	public CategoriaDto buscarPorId(Long id);
 
 }
