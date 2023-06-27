@@ -1,23 +1,23 @@
 package br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import br.com.fiap.lanchonete.dominio.Categoria;
 import br.com.fiap.lanchonete.dominio.portas.repositories.CategoriaRepositoryPort;
 import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
 public class CategoriasRepository implements CategoriaRepositoryPort {
-	
-	@Autowired
-	private SpringCategoriasRepository springCategoriasRepository;
-	
-	
+
+	private final SpringCategoriasRepository springCategoriasRepository;
+
+	public CategoriasRepository(SpringCategoriasRepository springCategoriasRepository) {
+		this.springCategoriasRepository = springCategoriasRepository;
+	}
+
 	@Override
 	public List<Categoria> buscarTodos() {
 		List<CategoriaEntity> categoriaEntities = this.springCategoriasRepository.findAll();

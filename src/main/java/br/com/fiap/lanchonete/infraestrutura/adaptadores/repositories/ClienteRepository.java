@@ -1,23 +1,22 @@
 package br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import br.com.fiap.lanchonete.dominio.Cliente;
 import br.com.fiap.lanchonete.dominio.portas.repositories.ClienteRepositoryPort;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ClienteEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.EnderecoEntity;
-import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.LogradouroEntity;
+import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
 public class ClienteRepository implements ClienteRepositoryPort {
 
-	@Autowired
-	private SpringClientesRepository springClientesRepository;
+	private final SpringClientesRepository springClientesRepository;
+
+	public ClienteRepository(SpringClientesRepository springClientesRepository) {
+		this.springClientesRepository = springClientesRepository;
+	}
 
 	@Override
 	public List<Cliente> buscarTodos() {

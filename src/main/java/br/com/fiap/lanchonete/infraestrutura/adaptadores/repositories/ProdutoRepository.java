@@ -1,22 +1,23 @@
 package br.com.fiap.lanchonete.infraestrutura.adaptadores.repositories;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import br.com.fiap.lanchonete.dominio.Produto;
 import br.com.fiap.lanchonete.dominio.portas.repositories.ProdutoRepositoryPort;
 import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ProdutoEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class ProdutoRepository implements ProdutoRepositoryPort {
 
-	@Autowired
-	private SpringProdutoRepository springProdutoRepository;
+	private final SpringProdutoRepository springProdutoRepository;
+
+	public ProdutoRepository(SpringProdutoRepository springProdutoRepository) {
+		this.springProdutoRepository = springProdutoRepository;
+	}
 
 	@Override
 	public List<Produto> findAll() {
