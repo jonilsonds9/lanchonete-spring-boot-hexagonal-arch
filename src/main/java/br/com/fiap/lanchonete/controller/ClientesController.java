@@ -3,6 +3,7 @@ package br.com.fiap.lanchonete.controller;
 import br.com.fiap.lanchonete.dominio.dtos.ClientesDto;
 import br.com.fiap.lanchonete.dominio.portas.interfaces.ClienteServicePort;
 import br.com.fiap.lanchonete.exceptions.ResponseHandler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
+@Tag(name = "Clientes", description = "API de gerenciamento de clientes")
 @Slf4j
 @RestController
 @RequestMapping("/api/clientes")
