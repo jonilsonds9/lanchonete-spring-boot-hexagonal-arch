@@ -6,14 +6,14 @@ import br.com.fiap.lanchonete.dominio.Produto;
 
 public interface ProdutoRepositoryPort {
 
-	public List<Produto> findAll();
+	List<Produto> findAll();
 
-	public Produto incluir(Produto produto);
+	Produto incluir(Produto produto);
 
-	public Produto alterar(Produto produto);
+	Produto alterar(Produto produto);
 
-	public void excluir(Long id);
+	void excluir(Long id);
 
-	public List<Produto> buscarPorCategoria(String categoria);
+	List<Produto> buscarPorCategoria(String categoria);
 
 }

@@ -8,6 +8,6 @@ import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.LogradouroEnt
 @Repository
 public interface SpringLogradouroRepository extends JpaRepository<LogradouroEntity, Long> {
 
-	public LogradouroEntity findByNome(String string);
+	LogradouroEntity findByNome(String string);
 
 }

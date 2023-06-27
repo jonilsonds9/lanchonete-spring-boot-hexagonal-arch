@@ -10,8 +10,8 @@ import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ProdutoEntity
 @Repository
 public interface SpringProdutoRepository extends JpaRepository<ProdutoEntity, Long> {
 
-	public List<ProdutoEntity> findByCategoriasNome(String categoria);
+	List<ProdutoEntity> findByCategoriasNome(String categoria);
 
-	public List<ProdutoEntity> findByNome(String nome);
+	List<ProdutoEntity> findByNome(String nome);
 
 }
