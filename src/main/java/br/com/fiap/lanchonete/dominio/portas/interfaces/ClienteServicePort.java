@@ -6,14 +6,14 @@ import br.com.fiap.lanchonete.dominio.dtos.ClientesDto;
 
 public interface ClienteServicePort {
 
-	public List<ClientesDto> buscarTodos();
+	List<ClientesDto> buscarTodos();
 
-	public ClientesDto incluir(ClientesDto clientesDto);
+	ClientesDto incluir(ClientesDto clientesDto);
 
-	public ClientesDto alterar(ClientesDto clientesDto);
+	ClientesDto alterar(ClientesDto clientesDto);
 
-	public void excluir(Long id);
+	void excluir(Long id);
 
-	public ClientesDto BuscarPorCPF(String cpf);
+	ClientesDto BuscarPorCPF(String cpf);
 
 }

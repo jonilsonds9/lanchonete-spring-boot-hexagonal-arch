@@ -8,14 +8,14 @@ import java.util.Optional;
 
 public interface CategoriaServicePort {
 
-	public List<CategoriaResponseDto> buscarTodos();
+	List<CategoriaResponseDto> buscarTodos();
 
-	public Optional<CategoriaResponseDto> buscarPorId(Long id);
+	Optional<CategoriaResponseDto> buscarPorId(Long id);
 
-	public CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto);
+	CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto);
 
-	public CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto);
+	CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto);
 
-	public void excluir(Long id);
+	void excluir(Long id);
 
 }

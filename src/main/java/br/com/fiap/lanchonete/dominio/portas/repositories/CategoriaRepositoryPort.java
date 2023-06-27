@@ -7,14 +7,14 @@ import br.com.fiap.lanchonete.dominio.Categoria;
 
 public interface CategoriaRepositoryPort {
 
-	public List<Categoria> buscarTodos();
+	List<Categoria> buscarTodos();
 
-	public Optional<Categoria> buscarPorId(Long id);
+	Optional<Categoria> buscarPorId(Long id);
 
-	public Categoria adicionar(Categoria categoria);
+	Categoria adicionar(Categoria categoria);
 
-	public Categoria alterar(Categoria categoria);
+	Categoria alterar(Categoria categoria);
 
-	public void excluir(Long id);
+	void excluir(Long id);
 
 }

@@ -6,6 +6,6 @@ import br.com.fiap.lanchonete.dominio.Pedido;
 
 public interface PedidoRepositoryPort {
 
-	public List<Pedido> buscarTodos();
+	List<Pedido> buscarTodos();
 
 }

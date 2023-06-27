@@ -8,5 +8,5 @@ import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.ClienteEntity
 @Repository
 public interface SpringClientesRepository extends JpaRepository<ClienteEntity, Long> {
 
-	public ClienteEntity findByCPF(String cpf);
+	ClienteEntity findByCPF(String cpf);
 }

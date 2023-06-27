@@ -8,6 +8,6 @@ import br.com.fiap.lanchonete.infraestrutura.adaptadores.entidades.CategoriaEnti
 @Repository
 public interface SpringCategoriasRepository extends JpaRepository<CategoriaEntity, Long> {
 
-	public CategoriaEntity findByNome(String string);
+	CategoriaEntity findByNome(String string);
 
 }

@@ -6,14 +6,14 @@ import br.com.fiap.lanchonete.dominio.Cliente;
 
 public interface ClienteRepositoryPort {
 
-	public List<Cliente> buscarTodos();
+	List<Cliente> buscarTodos();
 
-	public Cliente incluir(Cliente cliente);
+	Cliente incluir(Cliente cliente);
 
-	public Cliente alterar(Cliente cliente);
+	Cliente alterar(Cliente cliente);
 
-	public void excluir(Long id);
+	void excluir(Long id);
 
-	public Cliente buscarPorCPF(String cpf);
+	Cliente buscarPorCPF(String cpf);
 
 }
