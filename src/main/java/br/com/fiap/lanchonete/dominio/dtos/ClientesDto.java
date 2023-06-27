@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import br.com.fiap.lanchonete.utils.Util;
+import br.com.fiap.lanchonete.utils.DateTimeFormattedUtil;
 import lombok.Data;
 
 @Data
@@ -60,7 +60,7 @@ public class ClientesDto {
 		this.email = email;
 		this.telefone = telefone;
 		this.endereco = endereco;
-		this.dataNascimento = Util.dataToString(dataNascimento);
+		this.dataNascimento = DateTimeFormattedUtil.dataToString(dataNascimento);
 		this.dataCadastro = dataCadastro;
 		this.dataAtualizacao = dataAtualizacao;
 		this.dataExclusao = dataExclusao;

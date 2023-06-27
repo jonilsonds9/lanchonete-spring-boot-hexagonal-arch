@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import br.com.fiap.lanchonete.utils.Util;
 import lombok.Data;
 
 @Data

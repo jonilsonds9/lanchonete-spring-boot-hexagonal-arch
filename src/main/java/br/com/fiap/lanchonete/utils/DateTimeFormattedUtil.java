@@ -8,7 +8,7 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 
-public class Util {
+public class DateTimeFormattedUtil {
 	
     public static String dataToString(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
         return getConversionService().convert(data, String.class);
