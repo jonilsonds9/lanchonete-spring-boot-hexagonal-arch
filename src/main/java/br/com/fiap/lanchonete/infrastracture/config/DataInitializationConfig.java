@@ -1,10 +1,7 @@
 package br.com.fiap.lanchonete.infrastracture.config;
 
-import br.com.fiap.lanchonete.infrastracture.adaptadores.entidades.*;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.*;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.repositories.*;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.repositories.entidades.*;
-import br.com.fiap.lanchonete.infrastracture.respositories.postgres.*;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.*;
+import br.com.fiap.lanchonete.infrastracture.persistence.repositories.*;
 import br.com.fiap.lanchonete.utils.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

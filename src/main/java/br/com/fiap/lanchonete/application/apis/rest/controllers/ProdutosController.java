@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.lanchonete.application.apis.rest.dtos.ProdutosDto;
-import br.com.fiap.lanchonete.core.ports.services.ProdutoServicePort;
-import br.com.fiap.lanchonete.core.exceptions.ResponseHandler;
+import br.com.fiap.lanchonete.application.apis.rest.request.ProdutosDto;
+import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
+import br.com.fiap.lanchonete.infrastracture.exceptions.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "Produtos", description = "API de gerenciamento de produtos")

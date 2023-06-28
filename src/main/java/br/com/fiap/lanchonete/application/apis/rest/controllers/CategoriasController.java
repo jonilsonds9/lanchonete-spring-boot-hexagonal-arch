@@ -2,7 +2,7 @@ package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
-import br.com.fiap.lanchonete.core.ports.services.CategoriaServicePort;
+import br.com.fiap.lanchonete.domain.ports.services.CategoriaServicePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

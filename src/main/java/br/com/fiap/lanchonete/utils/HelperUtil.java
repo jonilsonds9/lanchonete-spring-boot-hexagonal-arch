@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.CategoriaEntity;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.ClienteEntity;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.EnderecoEntity;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.LogradouroEntity;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.PedidoEntity;
-import br.com.fiap.lanchonete.infrastracture.databases.postgres.entidades.ProdutoEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.CategoriaEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ClienteEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.EnderecoEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.LogradouroEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.PedidoEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ProdutoEntity;
 
 public class HelperUtil {
 	
