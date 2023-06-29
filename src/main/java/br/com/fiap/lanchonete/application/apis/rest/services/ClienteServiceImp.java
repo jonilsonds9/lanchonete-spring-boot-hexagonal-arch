@@ -1,12 +1,11 @@
 package br.com.fiap.lanchonete.application.apis.rest.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.fiap.lanchonete.domain.Cliente;
-import br.com.fiap.lanchonete.domain.ports.services.ClienteServicePort;
 import br.com.fiap.lanchonete.domain.ports.repositories.ClienteRepositoryPort;
-import br.com.fiap.lanchonete.application.apis.rest.request.ClientesDto;
+import br.com.fiap.lanchonete.domain.ports.services.ClienteServicePort;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ClienteServiceImp implements ClienteServicePort {
 
@@ -18,37 +17,17 @@ public class ClienteServiceImp implements ClienteServicePort {
     }
 
 	@Override
-	public List<ClientesDto> buscarTodos() {
-        List<Cliente> clientes = this.clienteRepositoryPort.buscarTodos();
-//        return clientes.stream().map(Cliente::toClienteDTO).collect(Collectors.toList());
-		return null;
+	public List<Cliente> buscarTodos() {
+		return this.clienteRepositoryPort.buscarTodos();
 	}
 
 	@Override
-	public ClientesDto incluir(ClientesDto clientesDto) {
-//		clientesDto.setAtivo(true);
-//		Cliente cliente = new Cliente(clientesDto);
-//		return Cliente.toClienteDto(this.clienteRepositoryPort.incluir(cliente));
-		return null;
+	public Cliente cadastrar(Cliente cliente) {
+		return this.clienteRepositoryPort.salvar(cliente);
 	}
 
 	@Override
-	public ClientesDto alterar(ClientesDto clientesDto) {
-//		Cliente cliente = new Cliente(clientesDto);
-//		return Cliente.toClienteDto(this.clienteRepositoryPort.alterar(cliente));
-		return null;
+	public Optional<Cliente> buscarPorCpf(String cpf) {
+		return this.clienteRepositoryPort.buscarPorCpf(cpf);
 	}
-
-	@Override
-	public void excluir(Long id) {
-		this.clienteRepositoryPort.excluir(id);			
-	}
-
-	@Override
-	public ClientesDto BuscarPorCPF(String cpf) {
-//		Cliente clientes = this.clienteRepositoryPort.buscarPorCPF(cpf);
-//		return Cliente.toClienteDto(clientes);
-		return null;
-	}
-
 }

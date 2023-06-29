@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ClienteEntity;
 
+import java.util.Optional;
+
 @Repository
 public interface SpringClientesRepository extends JpaRepository<ClienteEntity, Long> {
 
-	ClienteEntity findByCPF(String cpf);
+	Optional<ClienteEntity> findByCpf(String cpf);
 }

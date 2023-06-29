@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import br.com.fiap.lanchonete.domain.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,57 +22,33 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
 @Table(name = "clientes")
 public class ClienteEntity implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "cpf")
-    private String CPF;
-    
-    @Column(name = "nome")
+    private String cpf;
+
     private String nome;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "telefone")
     private String telefone;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "dataCadastro")
     private LocalDate dataCadastro;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "dataAtualizacao")
     private LocalDate  dataAtualizacao;
 
-    @Column(name = "ativo")
-    private Boolean ativo;
-    
-    public ClienteEntity(
-    		String cpf, 
-    		String nome, 
-    		String email, 
-    		String telefone,
-			LocalDate dataNascimento, 
-			LocalDate dataCadastro, 
+    public ClienteEntity(String cpf, String nome, String email, String telefone, LocalDate dataCadastro,
 			LocalDate dataAtualizacao) {
-		this.CPF = cpf;
+		this.cpf = cpf;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
@@ -79,7 +56,17 @@ public class ClienteEntity implements Serializable {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
+    public ClienteEntity(Cliente cliente) {
+        this(cliente.getCpf(), cliente.getNome(), cliente.getEmail(),
+                cliente.getTelefone(), cliente.getDataCadastro(), cliente.getDataAtualizacao());
+    }
+
+    @Deprecated
 	public ClienteEntity() {
 	}
 
+    public Cliente toCliente() {
+        return new Cliente(this.id, this.cpf, this.nome , this.email, this.telefone, this.dataCadastro,
+                this.dataAtualizacao);
+    }
 }

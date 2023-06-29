@@ -1,19 +1,15 @@
 package br.com.fiap.lanchonete.domain.ports.services;
 
-import java.util.List;
+import br.com.fiap.lanchonete.domain.Cliente;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.ClientesDto;
+import java.util.List;
+import java.util.Optional;
 
 public interface ClienteServicePort {
 
-	List<ClientesDto> buscarTodos();
+	List<Cliente> buscarTodos();
 
-	ClientesDto incluir(ClientesDto clientesDto);
+	Cliente cadastrar(Cliente cliente);
 
-	ClientesDto alterar(ClientesDto clientesDto);
-
-	void excluir(Long id);
-
-	ClientesDto BuscarPorCPF(String cpf);
-
+	Optional<Cliente> buscarPorCpf(String cpf);
 }

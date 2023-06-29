@@ -27,6 +27,10 @@ public class Cliente {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+    public Cliente(String cpf, String nome, String email, String telefone, LocalDate dataCadastro, LocalDate dataAtualizacao) {
+        this(null, cpf, nome, email, telefone, dataCadastro, dataAtualizacao);
+    }
+
     public Long getId() {
         return id;
     }
