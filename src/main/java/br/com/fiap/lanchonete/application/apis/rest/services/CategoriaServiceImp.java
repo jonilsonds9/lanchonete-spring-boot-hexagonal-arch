@@ -1,7 +1,7 @@
 package br.com.fiap.lanchonete.application.apis.rest.services;
 
 import br.com.fiap.lanchonete.domain.Categoria;
-import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequestDto;
+import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequest;
 import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
 import br.com.fiap.lanchonete.domain.ports.services.CategoriaServicePort;
 import br.com.fiap.lanchonete.domain.ports.repositories.CategoriaRepositoryPort;
@@ -33,16 +33,16 @@ public class CategoriaServiceImp implements CategoriaServicePort {
 	}
 
 	@Override
-	public CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto) {
-		Categoria categoria = new Categoria(categoriaRequestDto);
+	public CategoriaResponseDto adicionar(CategoriaRequest categoriaRequest) {
+		Categoria categoria = new Categoria(categoriaRequest);
 		Categoria novaCategoria = this.categoriaRepositoryPort.adicionar(categoria);
 		return novaCategoria.toCategoriaResponseDto();
 	}
 
 	@Override
-	public CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto) {
+	public CategoriaResponseDto alterar(Long id, CategoriaRequest categoriaRequest) {
 		Categoria categoria = this.categoriaRepositoryPort.buscarPorId(id).orElseThrow(NotFoundException::new);
-		categoria.atualizar(categoriaRequestDto);
+		categoria.atualizar(categoriaRequest);
 		Categoria categoriaAlterada = this.categoriaRepositoryPort.alterar(categoria);
 		return categoriaAlterada.toCategoriaResponseDto();
 	}

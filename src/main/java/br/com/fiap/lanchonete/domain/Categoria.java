@@ -1,34 +1,17 @@
 package br.com.fiap.lanchonete.domain;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequestDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.CategoriaEntity;
-import lombok.Getter;
+public enum Categoria {
 
-@Getter
-public class Categoria {
+    LANCHE("Lanche"),
+    ACOMPANHAMENTO("Acompanhando");
 
-    private Long id;    
-    private String nome;
+    private final String descricao;
 
-	public Categoria(String nome) {
-		this.nome = nome;
-	}
+    Categoria(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public Categoria(CategoriaRequestDto categoriaRequestDto) {
-		this(categoriaRequestDto.nome());
-	}
-
-	public Categoria(CategoriaEntity categoriaEntity) {
-		this.id = categoriaEntity.getId();
-		this.nome = categoriaEntity.getNome();
-	}
-
-	public CategoriaResponseDto toCategoriaResponseDto() {
-		return new CategoriaResponseDto(this.id, this.nome);
-	}
-
-	public void atualizar(CategoriaRequestDto categoriaRequestDto) {
-		this.nome = categoriaRequestDto.nome();
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 }

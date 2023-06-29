@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoDto;
+import br.com.fiap.lanchonete.domain.Situacao;
 import br.com.fiap.lanchonete.domain.ports.services.PedidoServicePort;
 import br.com.fiap.lanchonete.infrastracture.exceptions.ResponseHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,9 +24,22 @@ public class PedidosController {
         this.pedidoServicePort = pedidoServicePort;
     }
 
-	@GetMapping()
-	public ResponseEntity<Object> listar() {
-		log.info("Pesquisar todos os pedidos");
+	@PostMapping
+	public ResponseEntity<Object> criar(@RequestBody PedidoDto pedidoDto) {
+		// tenho pedido
+
+		// chama API de pagamento
+
+		// salvar pedido no banco?
+	}
+
+	@GetMapping
+	public ResponseEntity<Object> listar(@RequestParam String situacao) {
+		// Tentar transformar num valor do ENUM
+		Situacao situacaoDoPedido = Situacao.valueOf(situacao);
+
+		//query apenas pedidos da situacao na ordem
+
 		try {
 			List<PedidoDto> resultado = pedidoServicePort.buscarTodos();
 

@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.domain.ports.services;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequestDto;
+import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequest;
 import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
 
 import java.util.List;
@@ -12,9 +12,9 @@ public interface CategoriaServicePort {
 
 	Optional<CategoriaResponseDto> buscarPorId(Long id);
 
-	CategoriaResponseDto adicionar(CategoriaRequestDto categoriaRequestDto);
+	CategoriaResponseDto adicionar(CategoriaRequest categoriaRequest);
 
-	CategoriaResponseDto alterar(Long id, CategoriaRequestDto categoriaRequestDto);
+	CategoriaResponseDto alterar(Long id, CategoriaRequest categoriaRequest);
 
 	void excluir(Long id);
 
