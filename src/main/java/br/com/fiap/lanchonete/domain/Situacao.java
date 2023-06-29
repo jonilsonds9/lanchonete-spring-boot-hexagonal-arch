@@ -7,7 +7,7 @@ public enum Situacao {
     PRONTO("Pronto"),
     FINALIZADO("Finalizado");
 
-    private String descricao;
+    private final String descricao;
 
     Situacao(String descricao) {
         this.descricao = descricao;

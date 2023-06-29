@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.ClientesDto;
+import br.com.fiap.lanchonete.domain.Cliente;
 import br.com.fiap.lanchonete.domain.ports.services.ClienteServicePort;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
