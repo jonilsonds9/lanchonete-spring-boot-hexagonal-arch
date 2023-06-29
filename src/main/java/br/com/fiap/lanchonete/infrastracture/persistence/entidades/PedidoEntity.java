@@ -42,11 +42,6 @@ public class PedidoEntity implements Serializable {
     @JoinColumn(name = "cliente")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ClienteEntity clientes;
-    
-	@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "enderecoEntrega")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private EnderecoEntity enderecoEntrega;
 	
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "produtoSelecionados")

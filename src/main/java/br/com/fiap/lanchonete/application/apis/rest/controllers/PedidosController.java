@@ -3,7 +3,6 @@ package br.com.fiap.lanchonete.application.apis.rest.controllers;
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoDto;
 import br.com.fiap.lanchonete.domain.Situacao;
 import br.com.fiap.lanchonete.domain.ports.services.PedidoServicePort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.ResponseHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,6 +30,7 @@ public class PedidosController {
 		// chama API de pagamento
 
 		// salvar pedido no banco?
+		return null;
 	}
 
 	@GetMapping

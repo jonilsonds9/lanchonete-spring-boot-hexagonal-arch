@@ -48,20 +48,6 @@ public class ClienteEntity implements Serializable {
     @Column(name = "telefone")
     private String telefone;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private EnderecoEntity endereco;
-
-    @Column(name = "senha")
-    private String senha;
-
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "dataNascimento")
-    private LocalDate dataNascimento;
-
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -74,12 +60,6 @@ public class ClienteEntity implements Serializable {
     @Column(name = "dataAtualizacao")
     private LocalDate  dataAtualizacao;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "dataExclusao")
-    private LocalDate dataExclusao;
-
     @Column(name = "ativo")
     private Boolean ativo;
     
@@ -87,24 +67,16 @@ public class ClienteEntity implements Serializable {
     		String cpf, 
     		String nome, 
     		String email, 
-    		String telefone, 
-    		EnderecoEntity endereco,
+    		String telefone,
 			LocalDate dataNascimento, 
 			LocalDate dataCadastro, 
-			LocalDate dataAtualizacao, 
-			LocalDate dataExclusao,
-			Boolean ativo) {
+			LocalDate dataAtualizacao) {
 		this.CPF = cpf;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.endereco = endereco;
-		this.dataNascimento = dataNascimento;
 		this.dataCadastro = dataCadastro;
 		this.dataAtualizacao = dataAtualizacao;
-		this.dataExclusao = dataExclusao;
-		this.ativo = ativo;
-    	
 	}
 
 	public ClienteEntity() {

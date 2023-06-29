@@ -22,34 +22,37 @@ public class ProdutoRepository implements ProdutoRepositoryPort {
 	@Override
 	public List<Produto> findAll() {
 		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findAll();
-		return produtoEntities.stream().map(ProdutoEntity::toProduto).collect(Collectors.toList());
+//		return produtoEntities.stream().map(ProdutoEntity::toProduto).collect(Collectors.toList());
+		return null;
 	}
 
 	@Override
 	public Produto incluir(Produto produto) {
-		ProdutoEntity produtoEntity = new ProdutoEntity(
-				produto.getNome(), 
-				produto.getDescricao(), 
-				produto.getPreco(),
-				produto.getDataCadastro(), 
-				produto.getStatus(), 
-				produto.getCategorias());
-		
-		return new Produto(this.springProdutoRepository.save(produtoEntity));
+//		ProdutoEntity produtoEntity = new ProdutoEntity(
+//				produto.getNome(),
+//				produto.getDescricao(),
+//				produto.getPreco(),
+//				produto.getDataCadastro(),
+//				produto.getStatus(),
+//				produto.getCategorias());
+//
+//		return new Produto(this.springProdutoRepository.save(produtoEntity));
+		return null;
 	}
 
 	@Override
 	public Produto alterar(Produto produto) {
-		ProdutoEntity produtoEntity = new ProdutoEntity(
-				produto.getId(),
-				produto.getNome(), 
-				produto.getDescricao(), 
-				produto.getPreco(),
-				produto.getDataCadastro(), 
-				produto.getStatus(), 
-				produto.getCategorias());
-		
-		return new Produto(this.springProdutoRepository.save(produtoEntity));
+//		ProdutoEntity produtoEntity = new ProdutoEntity(
+//				produto.getId(),
+//				produto.getNome(),
+//				produto.getDescricao(),
+//				produto.getPreco(),
+//				produto.getDataCadastro(),
+//				produto.getStatus(),
+//				produto.getCategorias());
+//
+//		return new Produto(this.springProdutoRepository.save(produtoEntity));
+		return null;
 	}
 
 	@Override
@@ -60,7 +63,8 @@ public class ProdutoRepository implements ProdutoRepositoryPort {
 
 	@Override
 	public List<Produto> buscarPorCategoria(String categoria) {
-		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findByCategoriasNome(categoria);		
-		return Produto.toProdutos(produtoEntities);
+//		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findByCategoriasNome(categoria);
+//		return Produto.toProdutos(produtoEntities);
+		return null;
 	}
 }

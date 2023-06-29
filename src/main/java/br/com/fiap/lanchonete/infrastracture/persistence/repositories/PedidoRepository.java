@@ -21,7 +21,8 @@ public class PedidoRepository implements PedidoRepositoryPort {
 	@Override
 	public List<Pedido> buscarTodos() {
 		List<PedidoEntity> pedidoEntities = this.springPedidosRepository.findAll();
-		return Pedido.toPedidos(pedidoEntities); 
+//		return Pedido.toPedidos(pedidoEntities);
+		return null;
 	}
 
 	

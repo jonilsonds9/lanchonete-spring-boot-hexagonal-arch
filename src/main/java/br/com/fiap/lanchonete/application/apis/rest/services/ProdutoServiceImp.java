@@ -21,21 +21,24 @@ public class ProdutoServiceImp implements ProdutoServicePort {
 	@Override
 	public List<ProdutosDto> findAll() {
         List<Produto> produtos = this.produtoRepositoryPort.findAll();
-        return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
+//        return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
+		return null;
 	}
 
 	@Override
 	public ProdutosDto incluir(ProdutosDto produtosDto) {
-		produtosDto.setStatus(true);
-		produtosDto.setDataCadastro(LocalDateTime.now());
-		Produto produto = new Produto(produtosDto);
-		return Produto.toProdutoDto(produtoRepositoryPort.incluir(produto));
+//		produtosDto.setStatus(true);
+//		produtosDto.setDataCadastro(LocalDateTime.now());
+//		Produto produto = new Produto(produtosDto);
+//		return Produto.toProdutoDto(produtoRepositoryPort.incluir(produto));
+		return null;
 	}
 
 	@Override
 	public ProdutosDto alterar(ProdutosDto produtosDto) {
-		Produto produto = new Produto(produtosDto);
-		return Produto.toProdutoDto(produtoRepositoryPort.alterar(produto));
+//		Produto produto = new Produto(produtosDto);
+//		return Produto.toProdutoDto(produtoRepositoryPort.alterar(produto));
+		return null;
 	}
 
 	@Override
@@ -45,7 +48,8 @@ public class ProdutoServiceImp implements ProdutoServicePort {
 
 	@Override
 	public List<ProdutosDto> buscarPorCategoria(String categoria) {
-		List<Produto> produtos = produtoRepositoryPort.buscarPorCategoria(categoria);	
-		return Produto.toDto(produtos);
+//		List<Produto> produtos = produtoRepositoryPort.buscarPorCategoria(categoria);
+//		return Produto.toDto(produtos);
+		return null;
 	}
 }

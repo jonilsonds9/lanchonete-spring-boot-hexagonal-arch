@@ -1,95 +1,25 @@
 package br.com.fiap.lanchonete.utils;
 
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.CategoriaEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ClienteEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.EnderecoEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.LogradouroEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.PedidoEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ProdutoEntity;
-
 public class HelperUtil {
 	
     private HelperUtil() {
     }
 
-    public static List<LogradouroEntity> getLogradouro() {
-    	
-    	List<LogradouroEntity> lista =  new ArrayList<>();
-    	lista.add(new LogradouroEntity("Aeroporto"));
-    	lista.add(new LogradouroEntity("Alameda"));
-    	lista.add(new LogradouroEntity("Área"));
-    	lista.add(new LogradouroEntity("Avenida"));
-    	lista.add(new LogradouroEntity("Campo"));
-    	lista.add(new LogradouroEntity("Chácara"));
-    	lista.add(new LogradouroEntity("Colônia"));
-    	lista.add(new LogradouroEntity("Condomínio"));
-    	lista.add(new LogradouroEntity("Conjunto"));
-    	lista.add(new LogradouroEntity("Distrito"));
-    	lista.add(new LogradouroEntity("Esplanada"));
-    	lista.add(new LogradouroEntity("Estação"));
-    	lista.add(new LogradouroEntity("Estrada"));
-    	lista.add(new LogradouroEntity("Favela"));
-    	lista.add(new LogradouroEntity("Fazenda"));
-    	lista.add(new LogradouroEntity("Feira"));
-    	lista.add(new LogradouroEntity("Jardim"));
-    	lista.add(new LogradouroEntity("Ladeira"));
-    	lista.add(new LogradouroEntity("Lago"));
-    	lista.add(new LogradouroEntity("Lagoa"));
-    	lista.add(new LogradouroEntity("Largo"));
-    	lista.add(new LogradouroEntity("Loteamento"));
-    	lista.add(new LogradouroEntity("Morro"));
-    	lista.add(new LogradouroEntity("Núcleo"));
-    	lista.add(new LogradouroEntity("Parque"));
-    	lista.add(new LogradouroEntity("Passarela"));
-    	lista.add(new LogradouroEntity("Pátio"));
-    	lista.add(new LogradouroEntity("Praça"));
-    	lista.add(new LogradouroEntity("Quadra"));
-    	lista.add(new LogradouroEntity("Recanto"));
-    	lista.add(new LogradouroEntity("Residencial"));
-    	lista.add(new LogradouroEntity("Rodovia"));
-    	lista.add(new LogradouroEntity("Rua"));
-    	lista.add(new LogradouroEntity("Setor"));
-    	lista.add(new LogradouroEntity("Sítio"));
-    	lista.add(new LogradouroEntity("Travessa"));
-    	lista.add(new LogradouroEntity("Trecho"));
-    	lista.add(new LogradouroEntity("Trevo"));
-    	lista.add(new LogradouroEntity("Vale"));
-    	lista.add(new LogradouroEntity("Vereda"));
-    	lista.add(new LogradouroEntity("Via"));
-    	lista.add(new LogradouroEntity("Viaduto"));
-    	lista.add(new LogradouroEntity("Viela"));
-    	lista.add(new LogradouroEntity("Vila"));
-    	
-    	return lista;
-    }
-
-	public static ClienteEntity getCliente(LogradouroEntity logradouro) {
-
-		EnderecoEntity enderecos = new EnderecoEntity();		
-		enderecos.setLogradouro(logradouro);
-		enderecos.setEndereco("Av. Paulista");
-		enderecos.setNumero("1012");
-		enderecos.setComplemento("bloco 01");
-		enderecos.setBairro("bela vista");
-		enderecos.setCidade("São Paulo");
-		enderecos.setEstado("São Paulo");
-		enderecos.setCep("12345-678");
-		
+	public static ClienteEntity getCliente() {
 		ClienteEntity clientes = new ClienteEntity();
 		clientes.setCPF("123.456.789-00");
 		clientes.setNome("Teste Autom");
 		clientes.setEmail("teste@gmail.com");
-		clientes.setDataNascimento(LocalDate.now());
-		clientes.setEndereco(enderecos);
 		clientes.setDataCadastro(LocalDate.now());
 		clientes.setAtivo(true);
-		
 		return clientes;
 	}
 	
@@ -98,7 +28,6 @@ public class HelperUtil {
 		
 		pedidos.setCodigoPedido("YU10YU");
 		pedidos.setClientes(cliente);
-		pedidos.setEnderecoEntrega(cliente.getEndereco());
 		pedidos.setValorTotal(BigDecimal.valueOf(150.99));
 		pedidos.setProdutoSelecionados(produto);
 		return pedidos;

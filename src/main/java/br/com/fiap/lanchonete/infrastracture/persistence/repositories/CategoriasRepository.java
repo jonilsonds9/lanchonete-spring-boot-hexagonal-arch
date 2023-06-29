@@ -21,26 +21,30 @@ public class CategoriasRepository implements CategoriaRepositoryPort {
 
 	@Override
 	public List<Categoria> buscarTodos() {
-		List<CategoriaEntity> categoriaEntities = this.springCategoriasRepository.findAll();
-		return categoriaEntities.stream().map(Categoria::new).toList();
+//		List<CategoriaEntity> categoriaEntities = this.springCategoriasRepository.findAll();
+//		return categoriaEntities.stream().map(Categoria::new).toList();
+		return null;
 	}
 
 	@Override
 	public Optional<Categoria> buscarPorId(Long id) {
-		Optional<CategoriaEntity> optionalCategoriaEntity = this.springCategoriasRepository.findById(id);
-		return optionalCategoriaEntity.map(Categoria::new);
+//		Optional<CategoriaEntity> optionalCategoriaEntity = this.springCategoriasRepository.findById(id);
+//		return optionalCategoriaEntity.map(Categoria::new);
+		return null;
 	}
 
 	@Override
 	public Categoria adicionar(Categoria categoria) {
-		CategoriaEntity entity = new CategoriaEntity(categoria);
-		return new Categoria(this.springCategoriasRepository.save(entity));
+//		CategoriaEntity entity = new CategoriaEntity(categoria);
+//		return new Categoria(this.springCategoriasRepository.save(entity));
+		return null;
 	}
 
 	@Override
 	public Categoria alterar(Categoria categoria) {
-		CategoriaEntity entity = new CategoriaEntity(categoria.getId(), categoria.getNome());
-		return new Categoria(this.springCategoriasRepository.save(entity));
+//		CategoriaEntity entity = new CategoriaEntity(categoria.getId(), categoria.getNome());
+//		return new Categoria(this.springCategoriasRepository.save(entity));
+		return null;
 	}
 
 	@Override

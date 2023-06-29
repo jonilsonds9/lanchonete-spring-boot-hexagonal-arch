@@ -20,20 +20,23 @@ public class ClienteServiceImp implements ClienteServicePort {
 	@Override
 	public List<ClientesDto> buscarTodos() {
         List<Cliente> clientes = this.clienteRepositoryPort.buscarTodos();
-        return clientes.stream().map(Cliente::toClienteDTO).collect(Collectors.toList());
+//        return clientes.stream().map(Cliente::toClienteDTO).collect(Collectors.toList());
+		return null;
 	}
 
 	@Override
 	public ClientesDto incluir(ClientesDto clientesDto) {
-		clientesDto.setAtivo(true);
-		Cliente cliente = new Cliente(clientesDto);
-		return Cliente.toClienteDto(this.clienteRepositoryPort.incluir(cliente));
+//		clientesDto.setAtivo(true);
+//		Cliente cliente = new Cliente(clientesDto);
+//		return Cliente.toClienteDto(this.clienteRepositoryPort.incluir(cliente));
+		return null;
 	}
 
 	@Override
 	public ClientesDto alterar(ClientesDto clientesDto) {
-		Cliente cliente = new Cliente(clientesDto);
-		return Cliente.toClienteDto(this.clienteRepositoryPort.alterar(cliente));
+//		Cliente cliente = new Cliente(clientesDto);
+//		return Cliente.toClienteDto(this.clienteRepositoryPort.alterar(cliente));
+		return null;
 	}
 
 	@Override
@@ -43,8 +46,9 @@ public class ClienteServiceImp implements ClienteServicePort {
 
 	@Override
 	public ClientesDto BuscarPorCPF(String cpf) {
-		Cliente clientes = this.clienteRepositoryPort.buscarPorCPF(cpf);	
-		return Cliente.toClienteDto(clientes);
+//		Cliente clientes = this.clienteRepositoryPort.buscarPorCPF(cpf);
+//		return Cliente.toClienteDto(clientes);
+		return null;
 	}
 
 }

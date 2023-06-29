@@ -3,7 +3,9 @@ package br.com.fiap.lanchonete.domain;
 public enum Categoria {
 
     LANCHE("Lanche"),
-    ACOMPANHAMENTO("Acompanhando");
+    ACOMPANHAMENTO("Acompanhando"),
+    BEBIDA("Bebida"),
+    SOBREMESA("Sobremesa");
 
     private final String descricao;
 

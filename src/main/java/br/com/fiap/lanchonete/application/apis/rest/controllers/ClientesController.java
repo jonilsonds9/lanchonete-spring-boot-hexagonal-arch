@@ -2,7 +2,6 @@ package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.ClientesDto;
 import br.com.fiap.lanchonete.domain.ports.services.ClienteServicePort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.ResponseHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,19 +26,8 @@ public class ClientesController {
 
     @GetMapping()
     public ResponseEntity<Object> listar() {
-        log.info("Pesquisar todos os clientes");
-        try {
-            List<ClientesDto> resultado = clienteServicePort.buscarTodos();
-
-            if (resultado.isEmpty()) {
-                return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
-            }
-
-            return ResponseHandler.generateResponse("Lista encontrada", HttpStatus.OK, resultado);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-
-        }
+        List<ClientesDto> resultado = clienteServicePort.buscarTodos();
+        return ResponseEntity.ok(resultado);
     }
 
     @PostMapping("")

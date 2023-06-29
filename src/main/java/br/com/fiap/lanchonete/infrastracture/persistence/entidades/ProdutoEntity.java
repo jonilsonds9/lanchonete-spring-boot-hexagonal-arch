@@ -81,9 +81,5 @@ public class ProdutoEntity implements Serializable {
 		this.status = status;
 		this.categorias = categoria;
 	}
-	
-    public Produto toProduto() {
-        return new Produto(this.id, this.nome, this.descricao, this.preco, this.dataCadastro, this.status, this.categorias);
-    }
 
 }

@@ -5,7 +5,6 @@ import java.util.*;
 
 import lombok.Data;
 
-@Data
 public class Pedido {
 
 	private Long id;

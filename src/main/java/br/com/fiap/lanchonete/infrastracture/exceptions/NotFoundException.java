@@ -12,8 +12,4 @@ public class NotFoundException extends RuntimeException {
 
     public NotFoundException() {
     }
-
-    public static void main(String[] args) {
-        throw new NotFoundException()
-    }
 }

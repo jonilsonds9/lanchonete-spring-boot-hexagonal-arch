@@ -19,8 +19,9 @@ public class PedidoServiceImp implements PedidoServicePort {
 
 	@Override
 	public List<PedidoDto> buscarTodos() {
-        List<Pedido> pedidos = this.pedidoRepositoryPort.buscarTodos();
-        return pedidos.stream().map(Pedido::toPedidoDto).collect(Collectors.toList());
+//        List<Pedido> pedidos = this.pedidoRepositoryPort.buscarTodos();
+//        return pedidos.stream().map(Pedido::toPedidoDto).collect(Collectors.toList());
+        return null;
 	}
 	
 }

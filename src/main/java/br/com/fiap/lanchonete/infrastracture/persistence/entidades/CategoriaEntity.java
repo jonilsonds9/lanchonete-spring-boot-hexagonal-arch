@@ -39,7 +39,7 @@ public class CategoriaEntity implements Serializable {
     	this.nome = nome;
 	}
 
-    public CategoriaEntity(Categoria categoria) {
-        this(categoria.getNome());
-    }
+//    public CategoriaEntity(Categoria categoria) {
+//        this(categoria.getNome());
+//    }
 }

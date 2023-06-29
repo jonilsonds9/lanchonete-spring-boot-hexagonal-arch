@@ -14,18 +14,15 @@ import java.util.List;
 @Configuration
 public class DataInitializationConfig {
 
-    private final SpringLogradouroRepository logradouroRepository;
     private final SpringClientesRepository clientesRepository;
     private final SpringCategoriasRepository categoriasRepository;
     private final SpringProdutoRepository produtosRepository;
     private final SpringPedidosRepository pedidosRepository;
 
-    public DataInitializationConfig(SpringLogradouroRepository logradouroRepository,
-									SpringClientesRepository clientesRepository,
+    public DataInitializationConfig(SpringClientesRepository clientesRepository,
 									SpringCategoriasRepository categoriasRepository,
 									SpringProdutoRepository produtosRepository,
 									SpringPedidosRepository pedidosRepository) {
-        this.logradouroRepository = logradouroRepository;
         this.clientesRepository = clientesRepository;
         this.categoriasRepository = categoriasRepository;
         this.produtosRepository = produtosRepository;
@@ -36,14 +33,8 @@ public class DataInitializationConfig {
     public CommandLineRunner dataInitialization() {
         return args -> {
         	
-        	List<LogradouroEntity> logradouros = logradouroRepository.findAll();
-        	if (logradouros.size() == 0) {
-        		log.info("******* Inserir logradouro na base de dados*******");
-        		logradouroRepository.saveAll(HelperUtil.getLogradouro());
-        	}
-        	
-        	LogradouroEntity logradouro = logradouroRepository.findByNome("Rua");
-        	ClienteEntity cliente =  clientesRepository.save(HelperUtil.getCliente(logradouro));
+
+        	ClienteEntity cliente =  clientesRepository.save(HelperUtil.getCliente());
         	        	
         	List<CategoriaEntity> categorias = categoriasRepository.findAll();
         	if (categorias.size() == 0) {
