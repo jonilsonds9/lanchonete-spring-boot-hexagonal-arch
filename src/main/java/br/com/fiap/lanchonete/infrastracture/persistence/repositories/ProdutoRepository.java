@@ -1,15 +1,14 @@
 package br.com.fiap.lanchonete.infrastracture.persistence.repositories;
 
+import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.repositories.ProdutoRepositoryPort;
 import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ProdutoEntity;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-@Slf4j
 @Component
 public class ProdutoRepository implements ProdutoRepositoryPort {
 
@@ -20,51 +19,31 @@ public class ProdutoRepository implements ProdutoRepositoryPort {
 	}
 
 	@Override
-	public List<Produto> findAll() {
+	public List<Produto> buscarTodos() {
 		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findAll();
-//		return produtoEntities.stream().map(ProdutoEntity::toProduto).collect(Collectors.toList());
-		return null;
+		return produtoEntities.stream().map(ProdutoEntity::toProduto).toList();
 	}
 
 	@Override
-	public Produto incluir(Produto produto) {
-//		ProdutoEntity produtoEntity = new ProdutoEntity(
-//				produto.getNome(),
-//				produto.getDescricao(),
-//				produto.getPreco(),
-//				produto.getDataCadastro(),
-//				produto.getStatus(),
-//				produto.getCategorias());
-//
-//		return new Produto(this.springProdutoRepository.save(produtoEntity));
-		return null;
+	public Optional<Produto> buscarPorId(Long id) {
+		Optional<ProdutoEntity> optionalProdutoEntity = this.springProdutoRepository.findById(id);
+		return optionalProdutoEntity.map(ProdutoEntity::toProduto);
 	}
 
 	@Override
-	public Produto alterar(Produto produto) {
-//		ProdutoEntity produtoEntity = new ProdutoEntity(
-//				produto.getId(),
-//				produto.getNome(),
-//				produto.getDescricao(),
-//				produto.getPreco(),
-//				produto.getDataCadastro(),
-//				produto.getStatus(),
-//				produto.getCategorias());
-//
-//		return new Produto(this.springProdutoRepository.save(produtoEntity));
-		return null;
+	public List<Produto> buscarPorCategoria(Categoria categoria) {
+		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findByCategoria(categoria);
+		return produtoEntities.stream().map(ProdutoEntity::toProduto).toList();
+	}
+
+	@Override
+	public Produto salvar(Produto produto) {
+		ProdutoEntity produtoEntity = this.springProdutoRepository.save(new ProdutoEntity(produto));
+		return produtoEntity.toProduto();
 	}
 
 	@Override
 	public void excluir(Long id) {
-		ProdutoEntity produtoEntity = this.springProdutoRepository.findById(id).get();
-		this.springProdutoRepository.delete(produtoEntity);	
-	}
-
-	@Override
-	public List<Produto> buscarPorCategoria(String categoria) {
-//		List<ProdutoEntity> produtoEntities = this.springProdutoRepository.findByCategoriasNome(categoria);
-//		return Produto.toProdutos(produtoEntities);
-		return null;
+		this.springProdutoRepository.deleteById(id);
 	}
 }

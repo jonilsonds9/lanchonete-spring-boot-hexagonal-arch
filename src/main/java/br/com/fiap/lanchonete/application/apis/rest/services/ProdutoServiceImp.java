@@ -1,16 +1,15 @@
 package br.com.fiap.lanchonete.application.apis.rest.services;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
+import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
-import br.com.fiap.lanchonete.application.apis.rest.request.ProdutosDto;
 import br.com.fiap.lanchonete.domain.ports.repositories.ProdutoRepositoryPort;
+import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
+import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ProdutoServiceImp implements ProdutoServicePort {
-
 
     private final ProdutoRepositoryPort produtoRepositoryPort;
 
@@ -19,37 +18,27 @@ public class ProdutoServiceImp implements ProdutoServicePort {
     }
 
 	@Override
-	public List<ProdutosDto> findAll() {
-        List<Produto> produtos = this.produtoRepositoryPort.findAll();
-//        return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
-		return null;
+	public List<Produto> buscarTodos() {
+		return this.produtoRepositoryPort.buscarTodos();
 	}
 
 	@Override
-	public ProdutosDto incluir(ProdutosDto produtosDto) {
-//		produtosDto.setStatus(true);
-//		produtosDto.setDataCadastro(LocalDateTime.now());
-//		Produto produto = new Produto(produtosDto);
-//		return Produto.toProdutoDto(produtoRepositoryPort.incluir(produto));
-		return null;
+	public Produto cadastrar(Produto produto) {
+		return this.produtoRepositoryPort.salvar(produto);
 	}
 
 	@Override
-	public ProdutosDto alterar(ProdutosDto produtosDto) {
-//		Produto produto = new Produto(produtosDto);
-//		return Produto.toProdutoDto(produtoRepositoryPort.alterar(produto));
+	public Produto alterar(Produto produto) {
 		return null;
 	}
 
 	@Override
 	public void excluir(Long id) {
-		produtoRepositoryPort.excluir(id);		
+		this.produtoRepositoryPort.excluir(id);
 	}
 
 	@Override
-	public List<ProdutosDto> buscarPorCategoria(String categoria) {
-//		List<Produto> produtos = produtoRepositoryPort.buscarPorCategoria(categoria);
-//		return Produto.toDto(produtos);
-		return null;
+	public List<Produto> buscarPorCategoria(Categoria categoria) {
+		return this.produtoRepositoryPort.buscarPorCategoria(categoria);
 	}
 }

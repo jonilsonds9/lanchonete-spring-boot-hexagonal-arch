@@ -1,19 +1,20 @@
 package br.com.fiap.lanchonete.domain.ports.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
+import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 
 public interface ProdutoRepositoryPort {
 
-	List<Produto> findAll();
+	List<Produto> buscarTodos();
 
-	Produto incluir(Produto produto);
+	Optional<Produto> buscarPorId(Long id);
 
-	Produto alterar(Produto produto);
+	List<Produto> buscarPorCategoria(Categoria categoria);
+
+	Produto salvar(Produto produto);
 
 	void excluir(Long id);
-
-	List<Produto> buscarPorCategoria(String categoria);
-
 }

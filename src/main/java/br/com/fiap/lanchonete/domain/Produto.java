@@ -10,16 +10,15 @@ public class Produto {
 	private final String descricao;
 	private final BigDecimal preco;
 	private final LocalDateTime dataCadastro;
-	private final boolean disponivel;
 	private final Categoria categoria;
 
-	public Produto(Long id, String nome, String descricao, BigDecimal preco, LocalDateTime dataCadastro, boolean disponivel, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, BigDecimal preco, LocalDateTime dataCadastro,
+				   Categoria categoria) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
-		this.dataCadastro = dataCadastro;
-		this.disponivel = disponivel;
+		this.dataCadastro = dataCadastro != null ? dataCadastro : LocalDateTime.now();
 		this.categoria = categoria;
 	}
 
@@ -43,10 +42,6 @@ public class Produto {
 		return dataCadastro;
 	}
 
-	public boolean isDisponivel() {
-		return disponivel;
-	}
-
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -59,7 +54,6 @@ public class Produto {
 				", descricao='" + descricao + '\'' +
 				", preco=" + preco +
 				", dataCadastro=" + dataCadastro +
-				", disponivel=" + disponivel +
 				", categoria=" + categoria +
 				'}';
 	}
@@ -70,7 +64,6 @@ public class Produto {
 		private String descricao;
 		private BigDecimal preco;
 		private LocalDateTime dataCadastro;
-		private boolean disponivel;
 		private Categoria categoria;
 
 		public ProdutoBuilder() {
@@ -78,6 +71,11 @@ public class Produto {
 
 		public ProdutoBuilder id(Long id) {
 			this.id = id;
+			return this;
+		}
+
+		public ProdutoBuilder nome(String nome) {
+			this.nome = nome;
 			return this;
 		}
 
@@ -96,19 +94,13 @@ public class Produto {
 			return this;
 		}
 
-		public ProdutoBuilder disponivel(boolean disponivel) {
-			this.disponivel = disponivel;
-			return this;
-		}
-
 		public ProdutoBuilder categoria(Categoria categoria) {
 			this.categoria = categoria;
 			return this;
 		}
 
 		public Produto build() {
-			return new Produto(this.id, this.nome, this.descricao, this.preco, this.dataCadastro, this.disponivel,
-					this.categoria);
+			return new Produto(this.id, this.nome, this.descricao, this.preco, this.dataCadastro, this.categoria);
 		}
 	}
 }

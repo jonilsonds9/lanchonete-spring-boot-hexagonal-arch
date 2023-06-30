@@ -5,11 +5,9 @@ import br.com.fiap.lanchonete.application.apis.rest.request.CategoriaRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
 import br.com.fiap.lanchonete.domain.ports.services.CategoriaServicePort;
 import br.com.fiap.lanchonete.domain.ports.repositories.CategoriaRepositoryPort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CategoriaServiceImp implements CategoriaServicePort {
 

@@ -1,19 +1,22 @@
 package br.com.fiap.lanchonete.domain.ports.services;
 
-import java.util.List;
+import br.com.fiap.lanchonete.domain.Categoria;
+import br.com.fiap.lanchonete.domain.Produto;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.ProdutosDto;
+import java.util.List;
+import java.util.Optional;
 
 public interface ProdutoServicePort {
 
-	List<ProdutosDto> findAll();
+	List<Produto> buscarTodos();
 
-	ProdutosDto incluir(ProdutosDto produtosDto);
+	Optional<Produto> buscarPorId(Long id);
 
-	ProdutosDto alterar(ProdutosDto produtosDtoRequest);
+	Produto cadastrar(Produto produto);
+
+	Produto alterar(Produto produto);
 
 	void excluir(Long id);
 
-	List<ProdutosDto> buscarPorCategoria(String categoria);
-
+	List<Produto> buscarPorCategoria(Categoria categoria);
 }

@@ -1,113 +1,141 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.ProdutosDto;
+import br.com.fiap.lanchonete.application.apis.rest.request.ProdutoRequestDto;
+import br.com.fiap.lanchonete.application.apis.rest.response.*;
+import br.com.fiap.lanchonete.domain.Categoria;
+import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
+import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Tag(name = "Produtos", description = "API de gerenciamento de produtos")
-@Slf4j
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutosController {
 
-	@Autowired
-	private ProdutoServicePort produtoServicePort;
+	private final ProdutoServicePort produtoServicePort;
+
+	public ProdutosController(ProdutoServicePort produtoServicePort) {
+		this.produtoServicePort = produtoServicePort;
+	}
 
 	@Operation(
 			summary = "Lista todos os produtos",
 			description = "Retorna uma lista de todos os produtos ou uma lista vazia se nenhum produto for encontrado")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(array = @ArraySchema(schema = @Schema(implementation = ProdutoResponseDto.class)), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
+	})
 	@GetMapping()
-	public ResponseEntity<Object> listar() {
-		log.info("Pesquisar todos os produtos");
+	public ResponseEntity<List<ProdutoResponseDto>> listar() {
+		List<Produto> produtos = produtoServicePort.buscarTodos();
+		List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
+		return ResponseEntity.ok(produtoResponseDtoList);
+	}
+
+	@Operation(
+			summary = "Busca todos os produtos por categoria",
+			description = "Retorna todos os protuso de uma determinada categoria")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = ProdutoResponseDto.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Aa categoria fornecida não foi encontrada", content = { @Content(schema = @Schema()) })
+	})
+	@GetMapping("/categoria/{categoria}")
+	public ResponseEntity<List<ProdutoResponseDto>> buscarPorCategoria(@PathVariable("categoria") String categoria) {
 		try {
-			List<ProdutosDto> resultado = produtoServicePort.findAll();
-
-			if (resultado.isEmpty()) {
-				return ResponseHandler.generateResponse("Dado não encontrado!", HttpStatus.NO_CONTENT, resultado);
-			}
-
-			return ResponseHandler.generateResponse("Lista encontrada", HttpStatus.OK, resultado);
-		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-
+			List<Produto> produtos = produtoServicePort.buscarPorCategoria(Categoria.valueOf(categoria));
+			List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
+			return ResponseEntity.ok(produtoResponseDtoList);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
 		}
 	}
 
 	@Operation(
 			summary = "Cadastra um novo produto",
 			description = "Faz o cadastro de uma novo produto e retorna o produto em caso de sucesso")
-	@PostMapping("")
-	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
-		log.info("Incluir produtos");
+	@ApiResponses({
+			@ApiResponse(responseCode = "201", content = { @Content(schema = @Schema(implementation = ProdutoResponseDto.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Dados inválidos ou incorretos", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
+	})
+	@PostMapping
+	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutoRequestDto produtoRequestDto, BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
+
 		try {
-			ProdutosDto produtosDto = produtoServicePort.incluir(produtosDtoRequest);
-
-			if (Objects.isNull(produtosDto)) {
-				return ResponseHandler.generateResponse("Não foi possível incluir o produtos.", HttpStatus.BAD_REQUEST,
-						produtosDto);
-			}
-
-			return ResponseHandler.generateResponse("Produto incluído com sucesso.", HttpStatus.CREATED, produtosDto);
+			Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
 		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+			System.out.println("peguei aqui");
+			return ResponseEntity.internalServerError().build();
 		}
 	}
 
 	@Operation(
 			summary = "Altera um produto existente",
 			description = "Altera um produto já cadastrado no sistema")
-	@PutMapping("")
-	public ResponseEntity<Object> alterar(@Valid @RequestBody ProdutosDto produtosDtoRequest) {
-		log.info("Alterar produtos");
-		try {
-			ProdutosDto produtosDto = produtoServicePort.alterar(produtosDtoRequest);
-
-			if (Objects.isNull(produtosDto)) {
-				return ResponseHandler.generateResponse("Não foi possível alterar o produtos.", HttpStatus.BAD_REQUEST,
-						produtosDto);
-			}
-
-			return ResponseHandler.generateResponse("Produto alterado com sucesso.", HttpStatus.OK, produtosDto);
-		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = ProdutoResponseDto.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Dados inválidos ou incorretos", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
+	})
+	@PutMapping
+	public ResponseEntity<Object> alterar(@PathVariable("id") Long id,
+										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto,
+										  BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
+		return ResponseEntity.ok().build();
+// TODO: Implmentar
+
+//		try {
+//			Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
+//
+//
+//			produtoRequestDto.toProduto()
+//			ProdutosDto produtosDto = produtoServicePort.alterar(produtosDtoRequest);
+//
+//			if (Objects.isNull(produtosDto)) {
+//				return ResponseHandler.generateResponse("Não foi possível alterar o produtos.", HttpStatus.BAD_REQUEST,
+//						produtosDto);
+//			}
+//
+//			return ResponseHandler.generateResponse("Produto alterado com sucesso.", HttpStatus.OK, produtosDto);
+//		} catch (RuntimeException e) {
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+//		}
 	}
 
 	@Operation(
 			summary = "Exclui um produto existente",
 			description = "Exclui um produto cadastrado no sistema")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Produto excluído com sucesso", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "404", description = "O Id do produto fornecido não foi encontrado", content = { @Content(schema = @Schema()) }),
+	})
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> excluir(@PathVariable("id") Long id) {
-		log.info("Excluir produtos");
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
 		try {
 			produtoServicePort.excluir(id);
-			return ResponseHandler.generateResponse("Produto excluído com sucesso.", HttpStatus.OK, null);
+			return ResponseEntity.ok().build();
 		} catch (RuntimeException e) {
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+			return ResponseEntity.notFound().build();
 		}
-	}
-
-	@Operation(
-			summary = "Pesquisa por um produto pelo Id",
-			description = "Retorna um produto pelo Id")
-	@GetMapping("/{categoria}")
-	public ResponseEntity<Object> pesquisar(@PathVariable("categoria") String categoria) {
-		List<ProdutosDto> produtosDto = produtoServicePort.buscarPorCategoria(categoria);
-
-		if (produtosDto.isEmpty()) {
-			return new ResponseEntity<>("Produto não encontrado.", HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(produtosDto, HttpStatus.OK);
 	}
 }
