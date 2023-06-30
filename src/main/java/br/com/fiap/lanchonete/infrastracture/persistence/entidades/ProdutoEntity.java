@@ -31,6 +31,7 @@ public class ProdutoEntity implements Serializable {
     private Categoria categoria;
 	private final boolean deleted = Boolean.FALSE;
 
+	@Deprecated
 	public ProdutoEntity() {
 	}
 

@@ -46,8 +46,13 @@ public class ClienteEntity implements Serializable {
 
     private LocalDate  dataAtualizacao;
 
-    public ClienteEntity(String cpf, String nome, String email, String telefone, LocalDate dataCadastro,
+    @Deprecated
+    public ClienteEntity() {
+    }
+
+    public ClienteEntity(Long id, String cpf, String nome, String email, String telefone, LocalDate dataCadastro,
 			LocalDate dataAtualizacao) {
+        this.id = id;
 		this.cpf = cpf;
 		this.nome = nome;
 		this.email = email;
@@ -57,13 +62,9 @@ public class ClienteEntity implements Serializable {
 	}
 
     public ClienteEntity(Cliente cliente) {
-        this(cliente.getCpf(), cliente.getNome(), cliente.getEmail(),
+        this(cliente.getId(), cliente.getCpf(), cliente.getNome(), cliente.getEmail(),
                 cliente.getTelefone(), cliente.getDataCadastro(), cliente.getDataAtualizacao());
     }
-
-    @Deprecated
-	public ClienteEntity() {
-	}
 
     public Cliente toCliente() {
         return new Cliente(this.id, this.cpf, this.nome , this.email, this.telefone, this.dataCadastro,
