@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 public class Produto {
 
 	private final Long id;
-	private final String nome;
-	private final String descricao;
-	private final BigDecimal preco;
+	private String nome;
+	private String descricao;
+	private BigDecimal preco;
 	private final LocalDateTime dataCadastro;
-	private final Categoria categoria;
+	private Categoria categoria;
 
 	public Produto(Long id, String nome, String descricao, BigDecimal preco, LocalDateTime dataCadastro,
 				   Categoria categoria) {
@@ -44,6 +44,22 @@ public class Produto {
 
 	public Categoria getCategoria() {
 		return categoria;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override

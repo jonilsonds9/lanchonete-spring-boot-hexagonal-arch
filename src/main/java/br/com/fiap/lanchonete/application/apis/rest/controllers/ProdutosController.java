@@ -1,7 +1,7 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.ProdutoRequestDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.*;
+import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Produtos", description = "API de gerenciamento de produtos")
 @RestController
@@ -81,7 +80,6 @@ public class ProdutosController {
 			Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
 			return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
 		} catch (RuntimeException e) {
-			System.out.println("peguei aqui");
 			return ResponseEntity.internalServerError().build();
 		}
 	}
@@ -94,32 +92,26 @@ public class ProdutosController {
 			@ApiResponse(responseCode = "400", description = "Dados inválidos ou incorretos", content = { @Content(schema = @Schema()) }),
 			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
 	})
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<Object> alterar(@PathVariable("id") Long id,
 										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto,
 										  BindingResult result) {
 		if (result.hasErrors()) {
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
-		return ResponseEntity.ok().build();
-// TODO: Implmentar
 
-//		try {
-//			Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
-//
-//
-//			produtoRequestDto.toProduto()
-//			ProdutosDto produtosDto = produtoServicePort.alterar(produtosDtoRequest);
-//
-//			if (Objects.isNull(produtosDto)) {
-//				return ResponseHandler.generateResponse("Não foi possível alterar o produtos.", HttpStatus.BAD_REQUEST,
-//						produtosDto);
-//			}
-//
-//			return ResponseHandler.generateResponse("Produto alterado com sucesso.", HttpStatus.OK, produtosDto);
-//		} catch (RuntimeException e) {
-//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-//		}
+		try {
+			Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
+			produto.setNome(produtoRequestDto.nome());
+			produto.setDescricao(produtoRequestDto.descricao());
+			produto.setPreco(produtoRequestDto.preco());
+			produto.setCategoria(produtoRequestDto.categoria());
+
+			Produto produtoAlterado = produtoServicePort.alterar(produto);
+			return ResponseEntity.ok(new ProdutoResponseDto(produtoAlterado));
+		} catch (RuntimeException e) {
+			return ResponseEntity.internalServerError().build();
+		}
 	}
 
 	@Operation(

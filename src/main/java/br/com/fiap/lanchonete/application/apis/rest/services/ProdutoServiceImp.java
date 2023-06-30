@@ -23,13 +23,18 @@ public class ProdutoServiceImp implements ProdutoServicePort {
 	}
 
 	@Override
+	public Optional<Produto> buscarPorId(Long id) {
+		return this.produtoRepositoryPort.buscarPorId(id);
+	}
+
+	@Override
 	public Produto cadastrar(Produto produto) {
 		return this.produtoRepositoryPort.salvar(produto);
 	}
 
 	@Override
 	public Produto alterar(Produto produto) {
-		return null;
+		return this.produtoRepositoryPort.salvar(produto);
 	}
 
 	@Override
