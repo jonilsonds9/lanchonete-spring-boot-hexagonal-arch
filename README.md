@@ -85,8 +85,9 @@ A instalação é bem simples, siga as seguintes etapas:
 <!-- EXEMPLOS DE USO -->
 ## Exemplos de uso
 
-### Para acessar o Swagger UI
-	http://localhost:8081/swagger-ui.html
+### Para acessar o Swagger UI use uma das seguintes URLs
+- http://localhost:8081/api/docs
+- http://localhost:8081/swagger-ui.html
 
 ### Para acessar a documentação da API (JSON)
     http://localhost:8081/v3/api-docs
