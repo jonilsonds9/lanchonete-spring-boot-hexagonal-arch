@@ -18,6 +18,19 @@ services:
       timeout: 5s #tempo maximo de espera
       retries: 5 # numero de tentativas
 
+  mock_pagamento:
+    build: ./mock_pagamento
+    image: mock_pagamento
+    container_name: mock_pagamento
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000/ping || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
   app:
     build:
       context: .
@@ -32,6 +45,8 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
+      mock_pagamento:
+        condition: service_healthy
       database:
         condition: service_healthy #inicia o container do app só quando o postgres disser que está healthy
     healthcheck:
@@ -40,3 +55,4 @@ services:
       timeout: 5s
       retries: 5
       start_period: 15s
+

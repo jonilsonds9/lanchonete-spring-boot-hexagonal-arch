@@ -34,3 +34,6 @@ build/
 
 /tmp
 .env
+
+### mock_pagamento ###
+node_modules
