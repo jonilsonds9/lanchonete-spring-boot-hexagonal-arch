@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import routes from './src/routes/index.js';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -14,5 +14,5 @@ routes.get('/ping', (request, response) => {
 app.use('/', routes);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Mock Pagamento iniciado na porta ${port}`)
 })
