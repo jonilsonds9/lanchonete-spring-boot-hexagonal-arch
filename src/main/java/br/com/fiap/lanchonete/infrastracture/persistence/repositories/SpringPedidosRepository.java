@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import br.com.fiap.lanchonete.infrastracture.persistence.entidades.PedidoEntity;
 
+import java.util.Optional;
+
 @Repository("pedidosPostgresRepository")
 @Qualifier("pedidosPostgresRepository")
 public interface SpringPedidosRepository extends JpaRepository<PedidoEntity, Long> {
 
-
+    Optional<PedidoEntity> findByCodigoPedido(String codigo);
 }
