@@ -7,13 +7,13 @@ public class ItemPedido {
     private final Long id;
     private final Produto produto;
     private final Integer quantidade;
-    private final BigDecimal precoTotal;
+    private final BigDecimal preco;
 
-    public ItemPedido(Long id, Produto produto, Integer quantidade, BigDecimal precoTotal) {
+    public ItemPedido(Long id, Produto produto, Integer quantidade) {
         this.id = id;
         this.produto = produto;
         this.quantidade = quantidade;
-        this.precoTotal = precoTotal;
+        this.preco = produto.getPreco().multiply(BigDecimal.valueOf(quantidade));
     }
 
     public Long getId() {
@@ -29,6 +29,6 @@ public class ItemPedido {
     }
 
     public BigDecimal getPrecoTotal() {
-        return precoTotal;
+        return preco;
     }
 }

@@ -9,18 +9,19 @@ public class Pedido {
 	private final String codigoPedido;
 	private final Cliente cliente;
 	private final List<ItemPedido> itensPedido;
-	private final BigDecimal valorTotal;
+	private final BigDecimal precoTotal;
 	private final Situacao situacao;
 
 	public Pedido(Long id, String codigoPedido, Cliente cliente, List<ItemPedido> itensPedido,
-				  BigDecimal valorTotal, Situacao situacao) {
+				  BigDecimal precoTotal, Situacao situacao) {
 		this.id = id;
 		this.codigoPedido = codigoPedido;
 		this.cliente = cliente;
 		this.itensPedido = itensPedido;
-		this.valorTotal = valorTotal;
+		this.precoTotal = precoTotal;
 		this.situacao = situacao;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -38,8 +39,8 @@ public class Pedido {
 		return itensPedido;
 	}
 
-	public BigDecimal getValorTotal() {
-		return valorTotal;
+	public BigDecimal getPrecoTotal() {
+		return precoTotal;
 	}
 
 	public Situacao getSituacao() {
@@ -53,7 +54,7 @@ public class Pedido {
 				", codigoPedido='" + codigoPedido + '\'' +
 				", cliente=" + cliente +
 				", produtos=" + itensPedido +
-				", valorTotal=" + valorTotal +
+				", precoTotal=" + precoTotal +
 				", situacao=" + situacao +
 				'}';
 	}
@@ -63,7 +64,7 @@ public class Pedido {
 		private String codigoPedido;
 		private Cliente cliente = null;
 		private List<ItemPedido> itensPedido;
-		private BigDecimal valorTotal;
+		private BigDecimal precoTotal;
 		private Situacao situacao;
 
 		public PedidoBuilder() {
@@ -84,13 +85,13 @@ public class Pedido {
 			return this;
 		}
 
-		public PedidoBuilder produtosQuantidades(List<ItemPedido> itensPedido) {
+		public PedidoBuilder itensPedido(List<ItemPedido> itensPedido) {
 			this.itensPedido = itensPedido;
 			return this;
 		}
 
-		public PedidoBuilder valorTotal(BigDecimal valorTotal) {
-			this.valorTotal = valorTotal;
+		public PedidoBuilder precoTotal(BigDecimal precoTotal) {
+			this.precoTotal = precoTotal;
 			return this;
 		}
 
@@ -100,7 +101,7 @@ public class Pedido {
 		}
 
 		public Pedido build() {
-			return new Pedido(this.id, this.codigoPedido, this.cliente, this.itensPedido, this.valorTotal,
+			return new Pedido(this.id, this.codigoPedido, this.cliente, this.itensPedido, this.precoTotal,
 					this.situacao);
 		}
 	}

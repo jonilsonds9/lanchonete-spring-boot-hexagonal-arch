@@ -19,17 +19,17 @@ public class ItemPedidoEntity {
     @JoinColumn(name = "produto_id", referencedColumnName = "id")
     private ProdutoEntity produto;
     private Integer quantidade;
-    private BigDecimal precoTotal;
+    private BigDecimal preco;
 
     @Deprecated
     public ItemPedidoEntity() {
     }
 
-    public ItemPedidoEntity(Long id, ProdutoEntity produto, Integer quantidade, BigDecimal precoTotal) {
+    public ItemPedidoEntity(Long id, ProdutoEntity produto, Integer quantidade, BigDecimal preco) {
         this.id = id;
         this.produto = produto;
         this.quantidade = quantidade;
-        this.precoTotal = precoTotal;
+        this.preco = preco;
     }
 
     public ItemPedidoEntity(ItemPedido itemPedido) {
@@ -38,6 +38,6 @@ public class ItemPedidoEntity {
     }
 
     public ItemPedido toItemPedido() {
-        return new ItemPedido(this.id, this.produto.toProduto(), this.quantidade, this.precoTotal);
+        return new ItemPedido(this.id, this.produto.toProduto(), this.quantidade);
     }
 }

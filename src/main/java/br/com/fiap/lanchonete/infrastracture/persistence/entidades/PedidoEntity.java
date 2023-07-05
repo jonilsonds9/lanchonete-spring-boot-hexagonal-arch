@@ -30,7 +30,7 @@ public class PedidoEntity implements Serializable {
 	@JoinColumn(name = "pedido_id")
 	private List<ItemPedidoEntity> itensPedido = new ArrayList<>();
 
-	private BigDecimal valorTotal;
+	private BigDecimal precoTotal;
 
 	@Enumerated(EnumType.STRING)
 	private Situacao situacao;
@@ -40,25 +40,25 @@ public class PedidoEntity implements Serializable {
 	}
 
 	public PedidoEntity(Long id, String codigoPedido, ClienteEntity cliente, List<ItemPedidoEntity> itensPedido,
-						BigDecimal valorTotal, Situacao situacao) {
+						BigDecimal precoTotal, Situacao situacao) {
 		this.id = id;
 		this.codigoPedido = codigoPedido;
 		this.cliente = cliente;
 		this.itensPedido = itensPedido;
-		this.valorTotal = valorTotal;
+		this.precoTotal = precoTotal;
 		this.situacao = situacao;
 	}
 
 	public PedidoEntity(Pedido pedido) {
 		this(pedido.getId(), pedido.getCodigoPedido(), new ClienteEntity(pedido.getCliente()),
 				pedido.getItensPedido().stream().map(ItemPedidoEntity::new).toList(),
-				pedido.getValorTotal(), pedido.getSituacao());
+				pedido.getPrecoTotal(), pedido.getSituacao());
 	}
 
 	public Pedido toPedido() {
 		List<ItemPedido> itemPedidos = this.itensPedido.stream().map(ItemPedidoEntity::toItemPedido).toList();
 
-		return new Pedido(this.id, this.codigoPedido, this.cliente.toCliente(), itemPedidos, this.valorTotal,
+		return new Pedido(this.id, this.codigoPedido, this.cliente.toCliente(), itemPedidos, this.precoTotal,
 				this.situacao);
 	}
 }
