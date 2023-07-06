@@ -1,12 +1,11 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
-import br.com.fiap.lanchonete.application.apis.rest.request.ItemPedidoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.PedidoResponseDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
-import br.com.fiap.lanchonete.application.apis.rest.services.CheckoutService;
+import br.com.fiap.lanchonete.application.apis.rest.services.CheckoutServiceImp;
 import br.com.fiap.lanchonete.domain.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
+import br.com.fiap.lanchonete.infrastracture.exceptions.FalhaNoPagamentoException;
 import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Check;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Tag(name = "Pedidos", description = "API de gerenciamento de pedidos")
 @Slf4j
@@ -34,14 +30,14 @@ public class PedidosController {
     private final PedidoServicePort pedidoServicePort;
 	private final ClienteServicePort clienteServicePort;
 	private final ProdutoServicePort produtoServicePort;
-	private final CheckoutService checkoutService;
+	private final CheckoutServicePort checkoutServicePort;
 
     public PedidosController(PedidoServicePort pedidoServicePort, ClienteServicePort clienteServicePort,
-							 ProdutoServicePort produtoServicePort, CheckoutService checkoutService) {
+							 ProdutoServicePort produtoServicePort, CheckoutServicePort checkoutServicePort) {
         this.pedidoServicePort = pedidoServicePort;
 		this.clienteServicePort = clienteServicePort;
 		this.produtoServicePort = produtoServicePort;
-		this.checkoutService = checkoutService;
+		this.checkoutServicePort = checkoutServicePort;
     }
 
 	@Operation(
@@ -72,33 +68,33 @@ public class PedidosController {
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
 
-		try {
-			Cliente cliente = null;
-			if (pedidoRequestDto.clienteCpf() != null) {
-				cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
-			}
-
-			List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
-					.map(itemPedidoRequestDto -> {
-						Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
-								.orElseThrow(NotFoundException::new);
-
-						return new ItemPedido(null, produto, itemPedidoRequestDto.quantidade());
-					}).toList();
-
-			// tenho pedido
-			Pedido pedido = new Pedido.PedidoBuilder()
-					.cliente(cliente)
-					.itensPedido(itemPedidos)
-					.build();
-
-			// TODO: chama API de pagamento
-
-			// salvar pedido no banco
-			Pedido novoPedido = this.pedidoServicePort.novo(pedido);
-			return ResponseEntity.status(HttpStatus.CREATED).body(new PedidoResponseDto(novoPedido));
-		} catch (RuntimeException e) {
-			return ResponseEntity.internalServerError().build();
+		Cliente cliente = null;
+		if (pedidoRequestDto.clienteInformouCpf()) {
+			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
 		}
+
+		List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
+				.map(itemPedidoRequestDto -> {
+					Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
+							.orElseThrow(NotFoundException::new);
+
+					return new ItemPedido(null, produto, itemPedidoRequestDto.quantidade());
+				}).toList();
+
+		// tenho pedido
+		Pedido pedido = new Pedido.PedidoBuilder()
+				.cliente(cliente)
+				.itensPedido(itemPedidos)
+				.build();
+
+		// chama API de pagamento
+		boolean pago = this.checkoutServicePort.pagamento(pedido);
+		if (!pago) {
+			throw new FalhaNoPagamentoException("Erro ao processar pagamento!");
+		}
+
+		// salvar pedido no banco
+		Pedido novoPedido = this.pedidoServicePort.novo(pedido);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new PedidoResponseDto(novoPedido));
 	}
 }

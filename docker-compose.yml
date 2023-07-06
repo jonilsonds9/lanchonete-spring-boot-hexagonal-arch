@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - ./tmp/database:/var/lib/postgresql/data
     healthcheck: #verificação da saúde do container
@@ -57,4 +57,3 @@ services:
       timeout: 5s
       retries: 5
       start_period: 15s
-

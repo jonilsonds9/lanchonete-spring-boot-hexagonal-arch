@@ -13,7 +13,8 @@ public record PedidoResponseDto(Long id,
                                 Situacao situacao) {
 
     public PedidoResponseDto(Pedido pedido) {
-        this(pedido.getId(), null, new PedidoClienteResponseDto(pedido.getCliente()),
+        this(pedido.getId(), null,
+                pedido.getCliente() != null ? new PedidoClienteResponseDto(pedido.getCliente()) : null,
                 pedido.getItensPedido().stream().map(ItemPedidoResponseDto::new).toList(),
                 pedido.getPrecoTotal(), pedido.getSituacao());
     }

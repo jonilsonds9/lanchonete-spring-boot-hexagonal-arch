@@ -42,6 +42,7 @@ public class PedidoRepository implements PedidoRepositoryPort {
 
 	@Override
 	public Pedido salvar(Pedido pedido) {
-		return null;
+		PedidoEntity pedidoEntity = this.springPedidosRepository.save(new PedidoEntity(pedido));
+		return pedidoEntity.toPedido();
 	}
 }
