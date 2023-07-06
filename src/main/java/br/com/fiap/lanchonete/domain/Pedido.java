@@ -9,7 +9,7 @@ public class Pedido {
 	private final Long id;
 	// TODO: Como vai ser esse código pedido?
 	private final String codigoPedido;
-	private final Cliente cliente;
+	private Cliente cliente;
 	private final List<ItemPedido> itensPedido;
 	private final BigDecimal precoTotal;
 	private final Situacao situacao;
@@ -46,6 +46,8 @@ public class Pedido {
 	public Situacao getSituacao() {
 		return situacao;
 	}
+
+
 
 	@Override
 	public String toString() {

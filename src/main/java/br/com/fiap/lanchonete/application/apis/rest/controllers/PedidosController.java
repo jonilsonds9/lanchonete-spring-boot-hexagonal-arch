@@ -68,11 +68,6 @@ public class PedidosController {
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
 
-		Cliente cliente = null;
-		if (pedidoRequestDto.clienteInformouCpf()) {
-			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
-		}
-
 		List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
 				.map(itemPedidoRequestDto -> {
 					Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
@@ -80,6 +75,11 @@ public class PedidosController {
 
 					return new ItemPedido(null, produto, itemPedidoRequestDto.quantidade());
 				}).toList();
+
+		Cliente cliente = null;
+		if (pedidoRequestDto.clienteInformouCpf()) {
+			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
+		}
 
 		// tenho pedido
 		Pedido pedido = new Pedido.PedidoBuilder()
