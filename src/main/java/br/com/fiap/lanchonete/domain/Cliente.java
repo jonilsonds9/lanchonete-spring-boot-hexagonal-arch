@@ -8,7 +8,7 @@ public class Cliente {
 
     private final Long id;
 
-    @NotBlank // TODO: Arrumar validação!
+    @NotBlank // TODO: Como vai ficar validação no domínio
     private final String cpf;
     private final String nome;
     private final String email;
