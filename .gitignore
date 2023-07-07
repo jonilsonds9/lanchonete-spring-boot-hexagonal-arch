@@ -37,3 +37,6 @@ build/
 
 ### mock_pagamento ###
 node_modules
+
+### logs ###
+/logs
