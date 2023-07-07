@@ -1,14 +1,10 @@
 package br.com.fiap.lanchonete.domain;
 
-import br.com.fiap.lanchonete.domain.validations.NotBlank;
-
 import java.time.LocalDate;
 
 public class Cliente {
 
     private final Long id;
-
-    @NotBlank // TODO: Como vai ficar validação no domínio
     private final String cpf;
     private final String nome;
     private final String email;
