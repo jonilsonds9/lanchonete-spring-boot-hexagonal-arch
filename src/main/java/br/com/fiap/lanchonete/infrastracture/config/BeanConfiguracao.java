@@ -19,8 +19,8 @@ public class BeanConfiguracao {
     	return new ClienteServiceImp(clienteRepositoryPort);
     }
 
-//    @Bean
-//    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
-//    	return new PedidoServiceImp(pedidoRepositoryPort);
-//    }
+    @Bean
+    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
+    	return new PedidoServiceImp(pedidoRepositoryPort);
+    }
 }

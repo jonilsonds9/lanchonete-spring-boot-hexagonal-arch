@@ -1,24 +1,25 @@
 package br.com.fiap.lanchonete.domain;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 public class Pedido {
 
 	private final Long id;
+	// TODO: Como vai ser esse código pedido?
 	private final String codigoPedido;
-	private final Cliente cliente;
-	private final BigDecimal valorTotal;
-	private final Map<Produto, Integer> produtos;
+	private Cliente cliente;
+	private final List<ItemPedido> itensPedido;
+	private final BigDecimal precoTotal;
 	private final Situacao situacao;
 
-	public Pedido(Long id, String codigoPedido, Cliente cliente, BigDecimal valorTotal, Map<Produto,
-			Integer> produtos, Situacao situacao) {
+	public Pedido(Long id, String codigoPedido, Cliente cliente, List<ItemPedido> itensPedido, Situacao situacao) {
 		this.id = id;
 		this.codigoPedido = codigoPedido;
 		this.cliente = cliente;
-		this.valorTotal = valorTotal;
-		this.produtos = produtos;
+		this.itensPedido = itensPedido;
+		this.precoTotal = itensPedido.stream().map(ItemPedido::getPrecoTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 		this.situacao = situacao;
 	}
 
@@ -34,17 +35,19 @@ public class Pedido {
 		return cliente;
 	}
 
-	public BigDecimal getValorTotal() {
-		return valorTotal;
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
 	}
 
-	public Map<Produto, Integer> getProdutos() {
-		return produtos;
+	public BigDecimal getPrecoTotal() {
+		return precoTotal;
 	}
 
 	public Situacao getSituacao() {
 		return situacao;
 	}
+
+
 
 	@Override
 	public String toString() {
@@ -52,8 +55,8 @@ public class Pedido {
 				"id=" + id +
 				", codigoPedido='" + codigoPedido + '\'' +
 				", cliente=" + cliente +
-				", valorTotal=" + valorTotal +
-				", produtos=" + produtos +
+				", produtos=" + itensPedido +
+				", precoTotal=" + precoTotal +
 				", situacao=" + situacao +
 				'}';
 	}
@@ -62,9 +65,9 @@ public class Pedido {
 		private Long id;
 		private String codigoPedido;
 		private Cliente cliente = null;
-		private BigDecimal valorTotal;
-		private Map<Produto, Integer> produtos;
-		private Situacao situacao;
+		private List<ItemPedido> itensPedido;
+		private BigDecimal precoTotal;
+		private Situacao situacao = Situacao.RECEBIDO;
 
 		public PedidoBuilder() {
 		}
@@ -84,13 +87,13 @@ public class Pedido {
 			return this;
 		}
 
-		public PedidoBuilder valorTotal(BigDecimal valorTotal) {
-			this.valorTotal = valorTotal;
+		public PedidoBuilder itensPedido(List<ItemPedido> itensPedido) {
+			this.itensPedido = itensPedido;
 			return this;
 		}
 
-		public PedidoBuilder produtos(Map<Produto, Integer> produtos) {
-			this.produtos = produtos;
+		public PedidoBuilder precoTotal(BigDecimal precoTotal) {
+			this.precoTotal = precoTotal;
 			return this;
 		}
 
@@ -100,7 +103,7 @@ public class Pedido {
 		}
 
 		public Pedido build() {
-			return new Pedido(this.id, this.codigoPedido, this.cliente, this.valorTotal, this.produtos, this.situacao);
+			return new Pedido(this.id, this.codigoPedido, this.cliente, this.itensPedido, this.situacao);
 		}
 	}
 }
