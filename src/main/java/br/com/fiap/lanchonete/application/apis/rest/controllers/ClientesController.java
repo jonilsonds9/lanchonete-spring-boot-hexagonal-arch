@@ -58,12 +58,8 @@ public class ClientesController {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
 
-        try {
-            Cliente cliente = clienteServicePort.cadastrar(clienteRequestDto.toCliente());
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ClienteResponseDto(cliente));
-        } catch (RuntimeException e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        Cliente cliente = clienteServicePort.cadastrar(clienteRequestDto.toCliente());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClienteResponseDto(cliente));
     }
 
     @Operation(

@@ -5,7 +5,7 @@ import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,8 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutosController {
-
-	// TODO: Salvar produtos fake no banco??
 
 	private final ProdutoServicePort produtoServicePort;
 
@@ -55,13 +53,9 @@ public class ProdutosController {
 	})
 	@GetMapping("/categoria/{categoria}")
 	public ResponseEntity<List<ProdutoResponseDto>> buscarPorCategoria(@PathVariable("categoria") String categoria) {
-		try {
-			List<Produto> produtos = produtoServicePort.buscarPorCategoria(Categoria.valueOf(categoria));
-			List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
-			return ResponseEntity.ok(produtoResponseDtoList);
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
+		List<Produto> produtos = produtoServicePort.buscarPorCategoria(Categoria.valueOf(categoria));
+		List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
+		return ResponseEntity.ok(produtoResponseDtoList);
 	}
 
 	@Operation(
@@ -78,12 +72,8 @@ public class ProdutosController {
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
 
-		try {
-			Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
-			return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
-		} catch (RuntimeException e) {
-			return ResponseEntity.internalServerError().build();
-		}
+		Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
 	}
 
 	@Operation(
@@ -102,18 +92,14 @@ public class ProdutosController {
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
 
-		try {
-			Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
-			produto.setNome(produtoRequestDto.nome());
-			produto.setDescricao(produtoRequestDto.descricao());
-			produto.setPreco(produtoRequestDto.preco());
-			produto.setCategoria(produtoRequestDto.categoria());
+		Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
+		produto.setNome(produtoRequestDto.nome());
+		produto.setDescricao(produtoRequestDto.descricao());
+		produto.setPreco(produtoRequestDto.preco());
+		produto.setCategoria(produtoRequestDto.categoria());
 
-			Produto produtoAlterado = produtoServicePort.alterar(produto);
-			return ResponseEntity.ok(new ProdutoResponseDto(produtoAlterado));
-		} catch (RuntimeException e) {
-			return ResponseEntity.internalServerError().build();
-		}
+		Produto produtoAlterado = produtoServicePort.alterar(produto);
+		return ResponseEntity.ok(new ProdutoResponseDto(produtoAlterado));
 	}
 
 	@Operation(
@@ -125,11 +111,7 @@ public class ProdutosController {
 	})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
-		try {
-			produtoServicePort.excluir(id);
-			return ResponseEntity.ok().build();
-		} catch (RuntimeException e) {
-			return ResponseEntity.notFound().build();
-		}
+		produtoServicePort.excluir(id);
+		return ResponseEntity.ok().build();
 	}
 }

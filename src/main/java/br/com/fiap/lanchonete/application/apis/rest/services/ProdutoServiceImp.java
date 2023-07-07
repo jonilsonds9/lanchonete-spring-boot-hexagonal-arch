@@ -4,7 +4,6 @@ import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.repositories.ProdutoRepositoryPort;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;

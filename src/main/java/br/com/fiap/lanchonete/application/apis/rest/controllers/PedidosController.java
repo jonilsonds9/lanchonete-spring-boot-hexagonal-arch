@@ -2,11 +2,9 @@ package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.PedidoResponseDto;
-import br.com.fiap.lanchonete.application.apis.rest.services.CheckoutServiceImp;
 import br.com.fiap.lanchonete.domain.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
-import br.com.fiap.lanchonete.infrastracture.exceptions.FalhaNoPagamentoException;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,19 +79,16 @@ public class PedidosController {
 			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
 		}
 
-		// tenho pedido
 		Pedido pedido = new Pedido.PedidoBuilder()
 				.cliente(cliente)
 				.itensPedido(itemPedidos)
 				.build();
 
-		// chama API de pagamento
 		boolean pago = this.checkoutServicePort.pagamento(pedido);
 		if (!pago) {
-			throw new FalhaNoPagamentoException("Erro ao processar pagamento!");
+			return ResponseEntity.badRequest().body("Erro ao processar pagamento!");
 		}
 
-		// salvar pedido no banco
 		Pedido novoPedido = this.pedidoServicePort.novo(pedido);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new PedidoResponseDto(novoPedido));
 	}
