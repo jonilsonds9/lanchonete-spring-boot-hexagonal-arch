@@ -63,11 +63,11 @@ public class ClientesController {
     }
 
     @Operation(
-            summary = "Pesquisa um cliente pelo Id",
-            description = "Retorna um cliente pelo Id, se for encontrado")
+            summary = "Pesquisa um cliente pelo CPF",
+            description = "Retorna um cliente pelo CPF, se for encontrado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = CategoriaResponseDto.class), mediaType = "application/json") }),
-            @ApiResponse(responseCode = "404", description = "O Id do cliente fornecido não foi encontrado", content = { @Content(schema = @Schema()) })
+            @ApiResponse(responseCode = "404", description = "O CPF do cliente fornecido não foi encontrado", content = { @Content(schema = @Schema()) })
     })
     @GetMapping("/{cpf}")
     public ResponseEntity<ClienteResponseDto> buscarPorCpf(@PathVariable("cpf") String cpf) {

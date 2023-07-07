@@ -21,13 +21,9 @@ public record ClienteRequestDto(
 
         @NotBlank(message = "O telefone é obrigatório")
         @Pattern(regexp = "\\([0-9]{2}\\)\\s[0-9]{4,5}-[0-9]{4}", message = "Formato de telefone inválido. Use o formato (99) 99999-9999")
-        String telefone,
-
-        LocalDate dataCadastro,
-        LocalDate dataAtualizacao) {
+        String telefone) {
 
     public Cliente toCliente() {
-        return new Cliente(this.cpf, this.nome , this.email, this.telefone, this.dataCadastro,
-                this.dataAtualizacao);
+        return new Cliente(this.cpf, this.nome , this.email, this.telefone);
     }
 }
