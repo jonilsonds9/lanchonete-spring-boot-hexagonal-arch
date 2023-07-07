@@ -1,11 +1,11 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.application.apis.rest.request.ProdutoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -67,11 +66,7 @@ public class ProdutosController {
 			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
 	})
 	@PostMapping
-	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutoRequestDto produtoRequestDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
-
+	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutoRequestDto produtoRequestDto) {
 		Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
 		return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
 	}
@@ -86,12 +81,7 @@ public class ProdutosController {
 	})
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> alterar(@PathVariable("id") Long id,
-										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto,
-										  BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
-
+										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto) {
 		Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
 		produto.setNome(produtoRequestDto.nome());
 		produto.setDescricao(produtoRequestDto.descricao());

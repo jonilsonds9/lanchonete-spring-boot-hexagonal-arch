@@ -1,10 +1,10 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.PedidoResponseDto;
 import br.com.fiap.lanchonete.domain.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,11 +60,7 @@ public class PedidosController {
 			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
 	})
 	@PostMapping
-	public ResponseEntity<Object> criar(@RequestBody @Valid PedidoRequestDto pedidoRequestDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
-
+	public ResponseEntity<Object> criar(@RequestBody @Valid PedidoRequestDto pedidoRequestDto) {
 		List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
 				.map(itemPedidoRequestDto -> {
 					Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
