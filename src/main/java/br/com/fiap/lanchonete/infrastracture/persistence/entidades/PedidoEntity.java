@@ -22,9 +22,9 @@ public class PedidoEntity implements Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	private String codigoPedido;
+	private Integer codigoPedido;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente")
 	private ClienteEntity cliente;
 
@@ -44,9 +44,9 @@ public class PedidoEntity implements Serializable {
 	public PedidoEntity() {
 	}
 
-	public PedidoEntity(Pedido pedido) {
+	public PedidoEntity(Pedido pedido, ClienteEntity clienteEntity) {
 		this.codigoPedido = pedido.getCodigoPedido();
-		this.cliente = pedido.getCliente() != null ? new ClienteEntity(pedido.getCliente()) : null;
+		this.cliente = clienteEntity;
 		this.itensPedido = pedido.getItensPedido().stream().map(ItemPedidoEntity::new).toList();
 		this.precoTotal = pedido.getPrecoTotal();
 		this.situacao = pedido.getSituacao();
@@ -56,7 +56,7 @@ public class PedidoEntity implements Serializable {
 		return id;
 	}
 
-	public String getCodigoPedido() {
+	public Integer getCodigoPedido() {
 		return codigoPedido;
 	}
 

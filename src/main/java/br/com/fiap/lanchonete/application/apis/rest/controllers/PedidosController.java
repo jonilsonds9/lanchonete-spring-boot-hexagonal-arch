@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -27,14 +28,13 @@ public class PedidosController {
     private final PedidoServicePort pedidoServicePort;
 	private final ClienteServicePort clienteServicePort;
 	private final ProdutoServicePort produtoServicePort;
-	private final CheckoutServicePort checkoutServicePort;
+
 
     public PedidosController(PedidoServicePort pedidoServicePort, ClienteServicePort clienteServicePort,
-							 ProdutoServicePort produtoServicePort, CheckoutServicePort checkoutServicePort) {
+							 ProdutoServicePort produtoServicePort) {
         this.pedidoServicePort = pedidoServicePort;
 		this.clienteServicePort = clienteServicePort;
 		this.produtoServicePort = produtoServicePort;
-		this.checkoutServicePort = checkoutServicePort;
     }
 
 	@Operation(
@@ -51,6 +51,7 @@ public class PedidosController {
 		return ResponseEntity.ok(pedidoResponseDtoList);
 	}
 
+	@Transactional
 	@Operation(
 			summary = "Cria um novo pedido",
 			description = "Faz o cadastro de uma novo pedido e retorna o pedido em caso de sucesso")
@@ -73,20 +74,11 @@ public class PedidosController {
 
 		Cliente cliente = null;
 		if (pedidoRequestDto.clienteInformouCpf()) {
-			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
+			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf())
+					.orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
 		}
 
-		Pedido pedido = new Pedido.PedidoBuilder()
-				.cliente(cliente)
-				.itensPedido(itemPedidos)
-				.build();
-
-		boolean pago = this.checkoutServicePort.pagamento(pedido);
-		if (!pago) {
-			return ResponseEntity.badRequest().body("Erro ao processar pagamento!");
-		}
-
-		Pedido novoPedido = this.pedidoServicePort.novo(pedido);
+		Pedido novoPedido = this.pedidoServicePort.criar(cliente, itemPedidos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new PedidoResponseDto(novoPedido));
 	}
 }

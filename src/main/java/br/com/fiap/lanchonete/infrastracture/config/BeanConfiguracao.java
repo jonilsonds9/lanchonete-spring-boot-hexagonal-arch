@@ -19,7 +19,12 @@ public class BeanConfiguracao {
     }
 
     @Bean
-    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
-    	return new PedidoServiceImp(pedidoRepositoryPort);
+    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort, CheckoutServicePort checkoutServicePort) {
+    	return new PedidoServiceImp(pedidoRepositoryPort, checkoutServicePort);
+    }
+
+    @Bean
+    CheckoutServicePort checkoutServicePort() {
+        return new CheckoutServiceImp();
     }
 }

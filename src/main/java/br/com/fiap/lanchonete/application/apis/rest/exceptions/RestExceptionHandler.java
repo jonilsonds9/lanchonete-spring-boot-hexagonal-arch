@@ -36,6 +36,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntityErrorResponse(exception, HttpStatus.NOT_FOUND, message, request);
     }
 
+    @ExceptionHandler(PaymentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handlePaymentException(PaymentException exception,
+                                                                 WebRequest request) {
+        String message = "Problema no pagamento";
+        if (exception.getMessage() != null) {
+            message = exception.getMessage();
+        }
+        logger.error(message, exception);
+        return buildResponseEntityErrorResponse(exception, HttpStatus.BAD_REQUEST, message, request);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorResponse> handleAllUncaughtException(Exception exception, WebRequest request) {

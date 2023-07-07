@@ -7,14 +7,14 @@ import java.util.List;
 public class Pedido {
 
 	private Long id;
-	private String codigoPedido;
+	private final Integer codigoPedido;
 	private final Cliente cliente;
 	private final List<ItemPedido> itensPedido;
 	private final BigDecimal precoTotal;
 	private final Situacao situacao;
 	private LocalDateTime dataHoraCadastro;
 
-	public Pedido(Long id, String codigoPedido, Cliente cliente, List<ItemPedido> itensPedido, Situacao situacao,
+	public Pedido(Long id, Integer codigoPedido, Cliente cliente, List<ItemPedido> itensPedido, Situacao situacao,
 				  LocalDateTime dataHoraCadastro) {
 		this.id = id;
 		this.codigoPedido = codigoPedido;
@@ -25,7 +25,8 @@ public class Pedido {
 		this.dataHoraCadastro = dataHoraCadastro;
 	}
 
-	public Pedido(Cliente cliente, List<ItemPedido> itensPedido, Situacao situacao) {
+	public Pedido(Integer codigoPedido, Cliente cliente, List<ItemPedido> itensPedido, Situacao situacao) {
+		this.codigoPedido = codigoPedido;
 		this.cliente = cliente;
 		this.itensPedido = itensPedido;
 		this.precoTotal = itensPedido.stream().map(ItemPedido::getPrecoTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -36,7 +37,7 @@ public class Pedido {
 		return id;
 	}
 
-	public String getCodigoPedido() {
+	public Integer getCodigoPedido() {
 		return codigoPedido;
 	}
 
@@ -74,11 +75,17 @@ public class Pedido {
 	}
 
 	public static class PedidoBuilder {
+		private Integer codigoPedido;
 		private Cliente cliente = null;
 		private List<ItemPedido> itensPedido;
 		private Situacao situacao = Situacao.RECEBIDO;
 
 		public PedidoBuilder() {
+		}
+
+		public PedidoBuilder codigoPedido(Integer codigoPedido) {
+			this.codigoPedido = codigoPedido;
+			return this;
 		}
 
 		public PedidoBuilder cliente(Cliente cliente) {
@@ -97,7 +104,7 @@ public class Pedido {
 		}
 
 		public Pedido build() {
-			return new Pedido(this.cliente, this.itensPedido, this.situacao);
+			return new Pedido(this.codigoPedido, this.cliente, this.itensPedido, this.situacao);
 		}
 	}
 }
