@@ -1,11 +1,11 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.application.apis.rest.request.ProdutoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,8 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutosController {
-
-	// TODO: Salvar produtos fake no banco??
 
 	private final ProdutoServicePort produtoServicePort;
 
@@ -55,13 +52,9 @@ public class ProdutosController {
 	})
 	@GetMapping("/categoria/{categoria}")
 	public ResponseEntity<List<ProdutoResponseDto>> buscarPorCategoria(@PathVariable("categoria") String categoria) {
-		try {
-			List<Produto> produtos = produtoServicePort.buscarPorCategoria(Categoria.valueOf(categoria));
-			List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
-			return ResponseEntity.ok(produtoResponseDtoList);
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
+		List<Produto> produtos = produtoServicePort.buscarPorCategoria(Categoria.valueOf(categoria));
+		List<ProdutoResponseDto> produtoResponseDtoList = produtos.stream().map(ProdutoResponseDto::new).toList();
+		return ResponseEntity.ok(produtoResponseDtoList);
 	}
 
 	@Operation(
@@ -73,17 +66,9 @@ public class ProdutosController {
 			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
 	})
 	@PostMapping
-	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutoRequestDto produtoRequestDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
-
-		try {
-			Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
-			return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
-		} catch (RuntimeException e) {
-			return ResponseEntity.internalServerError().build();
-		}
+	public ResponseEntity<Object> incluir(@Valid @RequestBody ProdutoRequestDto produtoRequestDto) {
+		Produto produto = produtoServicePort.cadastrar(produtoRequestDto.toProduto());
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDto(produto));
 	}
 
 	@Operation(
@@ -96,24 +81,15 @@ public class ProdutosController {
 	})
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> alterar(@PathVariable("id") Long id,
-										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto,
-										  BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
+										  @Valid @RequestBody ProdutoRequestDto produtoRequestDto) {
+		Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
+		produto.setNome(produtoRequestDto.nome());
+		produto.setDescricao(produtoRequestDto.descricao());
+		produto.setPreco(produtoRequestDto.preco());
+		produto.setCategoria(produtoRequestDto.categoria());
 
-		try {
-			Produto produto = this.produtoServicePort.buscarPorId(id).orElseThrow(NotFoundException::new);
-			produto.setNome(produtoRequestDto.nome());
-			produto.setDescricao(produtoRequestDto.descricao());
-			produto.setPreco(produtoRequestDto.preco());
-			produto.setCategoria(produtoRequestDto.categoria());
-
-			Produto produtoAlterado = produtoServicePort.alterar(produto);
-			return ResponseEntity.ok(new ProdutoResponseDto(produtoAlterado));
-		} catch (RuntimeException e) {
-			return ResponseEntity.internalServerError().build();
-		}
+		Produto produtoAlterado = produtoServicePort.alterar(produto);
+		return ResponseEntity.ok(new ProdutoResponseDto(produtoAlterado));
 	}
 
 	@Operation(
@@ -125,11 +101,7 @@ public class ProdutosController {
 	})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
-		try {
-			produtoServicePort.excluir(id);
-			return ResponseEntity.ok().build();
-		} catch (RuntimeException e) {
-			return ResponseEntity.notFound().build();
-		}
+		produtoServicePort.excluir(id);
+		return ResponseEntity.ok().build();
 	}
 }

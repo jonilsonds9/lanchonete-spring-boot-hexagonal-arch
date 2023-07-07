@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.infrastracture.config;
 
-import br.com.fiap.lanchonete.application.apis.rest.services.*;
 import br.com.fiap.lanchonete.domain.ports.repositories.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +19,12 @@ public class BeanConfiguracao {
     }
 
     @Bean
-    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
-    	return new PedidoServiceImp(pedidoRepositoryPort);
+    PedidoServicePort pedidoService(PedidoRepositoryPort pedidoRepositoryPort, CheckoutServicePort checkoutServicePort) {
+    	return new PedidoServiceImp(pedidoRepositoryPort, checkoutServicePort);
+    }
+
+    @Bean
+    CheckoutServicePort checkoutServicePort() {
+        return new CheckoutServiceImp();
     }
 }

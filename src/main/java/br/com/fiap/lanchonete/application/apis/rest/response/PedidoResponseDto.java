@@ -6,14 +6,14 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record PedidoResponseDto(Long id,
-                                String codigoPedido,
+                                Integer codigoPedido,
                                 PedidoClienteResponseDto cliente,
                                 List<ItemPedidoResponseDto> itensPedido,
                                 BigDecimal precoTotal,
                                 Situacao situacao) {
 
     public PedidoResponseDto(Pedido pedido) {
-        this(pedido.getId(), null,
+        this(pedido.getId(), pedido.getCodigoPedido(),
                 pedido.getCliente() != null ? new PedidoClienteResponseDto(pedido.getCliente()) : null,
                 pedido.getItensPedido().stream().map(ItemPedidoResponseDto::new).toList(),
                 pedido.getPrecoTotal(), pedido.getSituacao());

@@ -1,12 +1,10 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.application.apis.rest.request.PedidoRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.PedidoResponseDto;
-import br.com.fiap.lanchonete.application.apis.rest.services.CheckoutServiceImp;
 import br.com.fiap.lanchonete.domain.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
-import br.com.fiap.lanchonete.infrastracture.exceptions.FalhaNoPagamentoException;
-import br.com.fiap.lanchonete.infrastracture.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,9 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -30,14 +28,13 @@ public class PedidosController {
     private final PedidoServicePort pedidoServicePort;
 	private final ClienteServicePort clienteServicePort;
 	private final ProdutoServicePort produtoServicePort;
-	private final CheckoutServicePort checkoutServicePort;
+
 
     public PedidosController(PedidoServicePort pedidoServicePort, ClienteServicePort clienteServicePort,
-							 ProdutoServicePort produtoServicePort, CheckoutServicePort checkoutServicePort) {
+							 ProdutoServicePort produtoServicePort) {
         this.pedidoServicePort = pedidoServicePort;
 		this.clienteServicePort = clienteServicePort;
 		this.produtoServicePort = produtoServicePort;
-		this.checkoutServicePort = checkoutServicePort;
     }
 
 	@Operation(
@@ -54,6 +51,7 @@ public class PedidosController {
 		return ResponseEntity.ok(pedidoResponseDtoList);
 	}
 
+	@Transactional
 	@Operation(
 			summary = "Cria um novo pedido",
 			description = "Faz o cadastro de uma novo pedido e retorna o pedido em caso de sucesso")
@@ -63,38 +61,24 @@ public class PedidosController {
 			@ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
 	})
 	@PostMapping
-	public ResponseEntity<Object> criar(@RequestBody @Valid PedidoRequestDto pedidoRequestDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body(result.getAllErrors());
-		}
-
+	public ResponseEntity<Object> criar(@RequestBody @Valid PedidoRequestDto pedidoRequestDto) {
 		List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
 				.map(itemPedidoRequestDto -> {
+					if (itemPedidoRequestDto.produtoId() == null) throw new NotFoundException("Id do Produto não existe");
+
 					Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
 							.orElseThrow(NotFoundException::new);
 
-					return new ItemPedido(null, produto, itemPedidoRequestDto.quantidade());
+					return new ItemPedido(produto, itemPedidoRequestDto.quantidade());
 				}).toList();
 
 		Cliente cliente = null;
 		if (pedidoRequestDto.clienteInformouCpf()) {
-			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf()).orElseThrow(NotFoundException::new);
+			cliente = clienteServicePort.buscarPorCpf(pedidoRequestDto.clienteCpf())
+					.orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
 		}
 
-		// tenho pedido
-		Pedido pedido = new Pedido.PedidoBuilder()
-				.cliente(cliente)
-				.itensPedido(itemPedidos)
-				.build();
-
-		// chama API de pagamento
-		boolean pago = this.checkoutServicePort.pagamento(pedido);
-		if (!pago) {
-			throw new FalhaNoPagamentoException("Erro ao processar pagamento!");
-		}
-
-		// salvar pedido no banco
-		Pedido novoPedido = this.pedidoServicePort.novo(pedido);
+		Pedido novoPedido = this.pedidoServicePort.criar(cliente, itemPedidos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new PedidoResponseDto(novoPedido));
 	}
 }

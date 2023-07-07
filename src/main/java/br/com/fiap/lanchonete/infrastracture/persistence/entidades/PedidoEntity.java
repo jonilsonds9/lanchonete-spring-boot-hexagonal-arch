@@ -1,11 +1,12 @@
 package br.com.fiap.lanchonete.infrastracture.persistence.entidades;
 
 import br.com.fiap.lanchonete.domain.*;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class PedidoEntity implements Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	private String codigoPedido;
+	private Integer codigoPedido;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente")
 	private ClienteEntity cliente;
 
@@ -36,29 +37,65 @@ public class PedidoEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Situacao situacao;
 
+	@CreationTimestamp
+	private LocalDateTime dataHoraCadastro;
+
 	@Deprecated
 	public PedidoEntity() {
 	}
 
-	public PedidoEntity(Long id, String codigoPedido, Cliente cliente, List<ItemPedidoEntity> itensPedido,
-						BigDecimal precoTotal, Situacao situacao) {
-		this.id = id;
-		this.codigoPedido = codigoPedido;
-		this.cliente = cliente != null ? new ClienteEntity(cliente) : null;
-		this.itensPedido = itensPedido;
-		this.precoTotal = precoTotal;
-		this.situacao = situacao;
+	public PedidoEntity(Pedido pedido, ClienteEntity clienteEntity) {
+		this.codigoPedido = pedido.getCodigoPedido();
+		this.cliente = clienteEntity;
+		this.itensPedido = pedido.getItensPedido().stream().map(ItemPedidoEntity::new).toList();
+		this.precoTotal = pedido.getPrecoTotal();
+		this.situacao = pedido.getSituacao();
 	}
 
-	public PedidoEntity(Pedido pedido) {
-		this(pedido.getId(), pedido.getCodigoPedido(), pedido.getCliente(),
-				pedido.getItensPedido().stream().map(ItemPedidoEntity::new).toList(),
-				pedido.getPrecoTotal(), pedido.getSituacao());
+	public Long getId() {
+		return id;
+	}
+
+	public Integer getCodigoPedido() {
+		return codigoPedido;
+	}
+
+	public ClienteEntity getCliente() {
+		return cliente;
+	}
+
+	public List<ItemPedidoEntity> getItensPedido() {
+		return itensPedido;
+	}
+
+	public BigDecimal getPrecoTotal() {
+		return precoTotal;
+	}
+
+	public Situacao getSituacao() {
+		return situacao;
+	}
+
+	public LocalDateTime getDataHoraCadastro() {
+		return dataHoraCadastro;
+	}
+
+	@Override
+	public String toString() {
+		return "PedidoEntity{" +
+				"id=" + id +
+				", codigoPedido='" + codigoPedido + '\'' +
+				", cliente=" + cliente +
+				", itensPedido=" + itensPedido +
+				", precoTotal=" + precoTotal +
+				", situacao=" + situacao +
+				", dataHoraCadastro=" + dataHoraCadastro +
+				'}';
 	}
 
 	public Pedido toPedido() {
 		List<ItemPedido> itemPedidos = this.itensPedido.stream().map(ItemPedidoEntity::toItemPedido).toList();
 		Cliente cliente = this.cliente != null ? this.cliente.toCliente() : null;
-		return new Pedido(this.id, this.codigoPedido, cliente, itemPedidos, this.situacao);
+		return new Pedido(this.id, this.codigoPedido, cliente, itemPedidos, this.situacao, this.dataHoraCadastro);
 	}
 }

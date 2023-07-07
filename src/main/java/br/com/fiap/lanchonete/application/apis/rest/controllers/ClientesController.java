@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.application.apis.rest.controllers;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.application.apis.rest.request.ClienteRequestDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
 import br.com.fiap.lanchonete.application.apis.rest.response.ClienteResponseDto;
@@ -12,11 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Tag(name = "Clientes", description = "API de gerenciamento de clientes")
 @RestController
@@ -52,26 +53,17 @@ public class ClientesController {
             @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = { @Content(schema = @Schema()) })
     })
     @PostMapping
-    public ResponseEntity<Object> cadastrar(@Valid @RequestBody ClienteRequestDto clienteRequestDto,
-                                            BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result.getAllErrors());
-        }
-
-        try {
-            Cliente cliente = clienteServicePort.cadastrar(clienteRequestDto.toCliente());
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ClienteResponseDto(cliente));
-        } catch (RuntimeException e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Object> cadastrar(@Valid @RequestBody ClienteRequestDto clienteRequestDto) {
+        Cliente cliente = clienteServicePort.cadastrar(clienteRequestDto.toCliente());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClienteResponseDto(cliente));
     }
 
     @Operation(
-            summary = "Pesquisa um cliente pelo Id",
-            description = "Retorna um cliente pelo Id, se for encontrado")
+            summary = "Pesquisa um cliente pelo CPF",
+            description = "Retorna um cliente pelo CPF, se for encontrado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = CategoriaResponseDto.class), mediaType = "application/json") }),
-            @ApiResponse(responseCode = "404", description = "O Id do cliente fornecido não foi encontrado", content = { @Content(schema = @Schema()) })
+            @ApiResponse(responseCode = "404", description = "O CPF do cliente fornecido não foi encontrado", content = { @Content(schema = @Schema()) })
     })
     @GetMapping("/{cpf}")
     public ResponseEntity<ClienteResponseDto> buscarPorCpf(@PathVariable("cpf") String cpf) {
@@ -79,6 +71,6 @@ public class ClientesController {
 
         return optionalCliente.map(ClienteResponseDto::new)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(NotFoundException::new);
     }
 }

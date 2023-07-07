@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.domain.ports.services;
 
-import br.com.fiap.lanchonete.domain.Pedido;
+import br.com.fiap.lanchonete.domain.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,5 +13,5 @@ public interface PedidoServicePort {
 
     Optional<Pedido> buscarPorCodigoPedido(String codigo);
 
-    Pedido novo(Pedido pedido);
+    Pedido criar(Cliente cliente, List<ItemPedido> itemPedidos);
 }

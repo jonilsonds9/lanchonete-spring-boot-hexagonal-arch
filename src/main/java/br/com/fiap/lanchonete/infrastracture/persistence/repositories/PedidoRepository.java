@@ -1,12 +1,13 @@
 package br.com.fiap.lanchonete.infrastracture.persistence.repositories;
 
+import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.domain.Pedido;
 import br.com.fiap.lanchonete.domain.ports.repositories.PedidoRepositoryPort;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.PedidoEntity;
-import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ProdutoEntity;
+import br.com.fiap.lanchonete.infrastracture.persistence.entidades.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -16,9 +17,11 @@ import java.util.stream.Stream;
 public class PedidoRepository implements PedidoRepositoryPort {
 
 	private final SpringPedidosRepository springPedidosRepository;
+	private final SpringClientesRepository springClientesRepository;
 
-	public PedidoRepository(SpringPedidosRepository springPedidosRepository) {
+	public PedidoRepository(SpringPedidosRepository springPedidosRepository, SpringClientesRepository springClientesRepository) {
 		this.springPedidosRepository = springPedidosRepository;
+		this.springClientesRepository = springClientesRepository;
 	}
 
 
@@ -41,8 +44,17 @@ public class PedidoRepository implements PedidoRepositoryPort {
 	}
 
 	@Override
+	public Integer ultimoPedido() {
+		return this.springPedidosRepository.countPedidoEntityByDataHoraCadastro(LocalDate.now());
+	}
+
+	@Override
 	public Pedido salvar(Pedido pedido) {
-		PedidoEntity pedidoEntity = this.springPedidosRepository.save(new PedidoEntity(pedido));
-		return pedidoEntity.toPedido();
+		ClienteEntity clienteEntity = this.springClientesRepository.findById(pedido.getCliente().getId()).orElseThrow(NotFoundException::new);
+		PedidoEntity pedidoEntity = new PedidoEntity(pedido, clienteEntity);
+
+		PedidoEntity pedidoEntitySaved = this.springPedidosRepository.save(pedidoEntity);
+
+		return pedidoEntitySaved.toPedido();
 	}
 }
