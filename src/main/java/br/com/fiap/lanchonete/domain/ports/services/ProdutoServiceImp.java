@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.application.apis.rest.services;
+package br.com.fiap.lanchonete.domain.ports.services;
 
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;

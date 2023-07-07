@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.infrastracture.config;
 
-import br.com.fiap.lanchonete.application.apis.rest.services.*;
 import br.com.fiap.lanchonete.domain.ports.repositories.*;
 import br.com.fiap.lanchonete.domain.ports.services.*;
 import org.springframework.context.annotation.Bean;
