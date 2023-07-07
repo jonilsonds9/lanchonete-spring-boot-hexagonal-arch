@@ -63,10 +63,12 @@ public class PedidosController {
 	public ResponseEntity<Object> criar(@RequestBody @Valid PedidoRequestDto pedidoRequestDto) {
 		List<ItemPedido> itemPedidos = pedidoRequestDto.itensPedido().stream()
 				.map(itemPedidoRequestDto -> {
+					if (itemPedidoRequestDto.produtoId() == null) throw new NotFoundException("Id do Produto não existe");
+
 					Produto produto = this.produtoServicePort.buscarPorId(itemPedidoRequestDto.produtoId())
 							.orElseThrow(NotFoundException::new);
 
-					return new ItemPedido(null, produto, itemPedidoRequestDto.quantidade());
+					return new ItemPedido(produto, itemPedidoRequestDto.quantidade());
 				}).toList();
 
 		Cliente cliente = null;

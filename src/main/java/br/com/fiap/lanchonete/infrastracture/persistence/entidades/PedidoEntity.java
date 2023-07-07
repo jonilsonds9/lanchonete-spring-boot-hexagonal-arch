@@ -24,7 +24,7 @@ public class PedidoEntity implements Serializable {
 
 	private String codigoPedido;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "cliente")
 	private ClienteEntity cliente;
 

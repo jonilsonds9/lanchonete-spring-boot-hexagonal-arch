@@ -29,6 +29,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException exception,
                                                                  WebRequest request) {
         String message = "Falha ao encontrar o elemento solicitado";
+        if (exception.getMessage() != null) {
+            message = exception.getMessage();
+        }
         logger.error(message, exception);
         return buildResponseEntityErrorResponse(exception, HttpStatus.NOT_FOUND, message, request);
     }
