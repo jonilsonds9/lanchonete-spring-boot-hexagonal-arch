@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.fiap.lanchonete.infrastracture.persistence.entidades.PedidoEntity;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository("pedidosPostgresRepository")
@@ -13,4 +14,6 @@ import java.util.Optional;
 public interface SpringPedidosRepository extends JpaRepository<PedidoEntity, Long> {
 
     Optional<PedidoEntity> findByCodigoPedido(String codigo);
+
+    Long countAllByDataHoraCadastroContaining(LocalDate localDate);
 }

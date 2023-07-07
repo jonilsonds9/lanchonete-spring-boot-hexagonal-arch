@@ -1,13 +1,15 @@
 package br.com.fiap.lanchonete.application.apis.rest.request;
 
+import br.com.fiap.lanchonete.application.apis.rest.validations.UniqueCpf;
+import br.com.fiap.lanchonete.application.apis.rest.validations.UniqueEmail;
 import br.com.fiap.lanchonete.domain.Cliente;
 
 import javax.validation.constraints.*;
-import java.time.LocalDate;
 
 public record ClienteRequestDto(
         @NotBlank(message = "O cpf é obrigatório")
         @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "Formato de CPF inválido. Use o formato 123.456.789-00")
+        @UniqueCpf
         String cpf,
 
         @NotBlank(message = "O nome é obrigatório")
@@ -17,6 +19,7 @@ public record ClienteRequestDto(
 
         @NotBlank(message = "O email é obrigatório")
         @Email(message = "O e-mail deve ser válido")
+        @UniqueEmail
         String email,
 
         @NotBlank(message = "O telefone é obrigatório")

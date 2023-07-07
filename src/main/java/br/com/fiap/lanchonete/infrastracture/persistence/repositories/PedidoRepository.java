@@ -7,6 +7,7 @@ import br.com.fiap.lanchonete.infrastracture.persistence.entidades.ProdutoEntity
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -38,6 +39,12 @@ public class PedidoRepository implements PedidoRepositoryPort {
 	public Optional<Pedido> buscarPorCodigoPedido(String codigo) {
 		Optional<PedidoEntity> optionalPedidoEntity = this.springPedidosRepository.findByCodigoPedido(codigo);
 		return optionalPedidoEntity.map(PedidoEntity::toPedido);
+	}
+
+	@Override
+	public Long ultimoPedido() {
+		Long aLong = this.springPedidosRepository.countAllByDataHoraCadastroContaining(LocalDate.now());
+		return aLong;
 	}
 
 	@Override

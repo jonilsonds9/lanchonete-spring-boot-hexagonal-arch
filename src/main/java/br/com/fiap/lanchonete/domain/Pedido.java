@@ -7,7 +7,6 @@ import java.util.List;
 public class Pedido {
 
 	private Long id;
-	// TODO: Como vai ser esse código pedido?
 	private String codigoPedido;
 	private final Cliente cliente;
 	private final List<ItemPedido> itensPedido;

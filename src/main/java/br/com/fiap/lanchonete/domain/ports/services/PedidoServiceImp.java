@@ -33,6 +33,7 @@ public class PedidoServiceImp implements PedidoServicePort {
 
     @Override
     public Pedido novo(Pedido pedido) {
+        Long aLong = this.pedidoRepositoryPort.ultimoPedido();
         return this.pedidoRepositoryPort.salvar(pedido);
     }
 }

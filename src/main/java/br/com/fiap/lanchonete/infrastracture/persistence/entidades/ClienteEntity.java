@@ -19,10 +19,12 @@ public class ClienteEntity implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(unique=true)
     private String cpf;
 
     private String nome;
 
+    @Column(unique=true)
     private String email;
 
     private String telefone;

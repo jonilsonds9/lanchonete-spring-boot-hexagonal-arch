@@ -13,5 +13,7 @@ public interface PedidoRepositoryPort {
 
 	Optional<Pedido> buscarPorCodigoPedido(String codigo);
 
+	Long ultimoPedido();
+
 	Pedido salvar(Pedido pedido);
 }
