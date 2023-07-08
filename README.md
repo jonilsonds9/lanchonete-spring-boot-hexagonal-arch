@@ -56,6 +56,7 @@ Para executar o projeto localmente siga as próximas etapas.
 
 * Docker com compose
   Veja a [documentação](https://docs.docker.com/engine/install/) para instalar o docker no seu sistema se ainda não tiver instalado.
+* NodeJS no mínimo na versão 16. Recomendado a versão 18 (LTS) disponível no [site oficial](https://nodejs.org/en).
 
 ### Instalação
 
@@ -80,7 +81,10 @@ A instalação é bem simples, siga as seguintes etapas:
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
 
+<!-- Aplicação de pagamento (mock) -->
+## Aplicação de pagamento (mock)
 
+Este sistema conta com uma aplicação externa que realiza os pagamentos, de forma mockada, visando apenas dar suporte ao fluxo da aplicação principal.
 
 <!-- EXEMPLOS DE USO -->
 ## Exemplos de uso
