@@ -1,9 +1,9 @@
-package br.com.fiap.lanchonete.application.apis.rest.controllers;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.controllers;
 
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
-import br.com.fiap.lanchonete.application.apis.rest.request.ClienteRequestDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.ClienteResponseDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.exceptions.NotFoundException;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.request.ClienteRequestDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.response.CategoriaResponseDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.response.ClienteResponseDto;
 import br.com.fiap.lanchonete.domain.Cliente;
 import br.com.fiap.lanchonete.domain.ports.services.ClienteServicePort;
 import io.swagger.v3.oas.annotations.Operation;

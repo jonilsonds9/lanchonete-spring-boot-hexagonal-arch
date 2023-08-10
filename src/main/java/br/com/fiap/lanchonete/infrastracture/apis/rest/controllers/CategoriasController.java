@@ -1,6 +1,6 @@
-package br.com.fiap.lanchonete.application.apis.rest.controllers;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.controllers;
 
-import br.com.fiap.lanchonete.application.apis.rest.response.CategoriaResponseDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.response.CategoriaResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;

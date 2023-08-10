@@ -1,6 +1,4 @@
-package br.com.fiap.lanchonete.application.apis.rest.request;
-
-import br.com.fiap.lanchonete.domain.Pedido;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.request;
 
 import java.util.List;
 

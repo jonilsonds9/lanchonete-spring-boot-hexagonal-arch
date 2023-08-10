@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.application.apis.rest.exceptions;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

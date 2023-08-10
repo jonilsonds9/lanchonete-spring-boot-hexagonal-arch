@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.application.apis.rest.controllers;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.controllers;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;

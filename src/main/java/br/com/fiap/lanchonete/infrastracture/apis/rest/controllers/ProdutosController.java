@@ -1,8 +1,8 @@
-package br.com.fiap.lanchonete.application.apis.rest.controllers;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.controllers;
 
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
-import br.com.fiap.lanchonete.application.apis.rest.request.ProdutoRequestDto;
-import br.com.fiap.lanchonete.application.apis.rest.response.ProdutoResponseDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.exceptions.NotFoundException;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.request.ProdutoRequestDto;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.response.ProdutoResponseDto;
 import br.com.fiap.lanchonete.domain.Categoria;
 import br.com.fiap.lanchonete.domain.Produto;
 import br.com.fiap.lanchonete.domain.ports.services.ProdutoServicePort;

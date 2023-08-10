@@ -1,10 +1,8 @@
 package br.com.fiap.lanchonete.domain.ports.services;
 
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.PaymentException;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.exceptions.PaymentException;
 import br.com.fiap.lanchonete.domain.*;
 import br.com.fiap.lanchonete.domain.ports.repositories.PedidoRepositoryPort;
-import br.com.fiap.lanchonete.domain.ports.services.PedidoServicePort;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;

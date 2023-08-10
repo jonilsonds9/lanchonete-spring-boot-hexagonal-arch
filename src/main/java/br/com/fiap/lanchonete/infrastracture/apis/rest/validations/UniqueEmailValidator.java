@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.application.apis.rest.validations;
+package br.com.fiap.lanchonete.infrastracture.apis.rest.validations;
 
 import br.com.fiap.lanchonete.infrastracture.persistence.repositories.SpringClientesRepository;
 

@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.infrastracture.persistence.repositories;
 
-import br.com.fiap.lanchonete.application.apis.rest.exceptions.NotFoundException;
+import br.com.fiap.lanchonete.infrastracture.apis.rest.exceptions.NotFoundException;
 import br.com.fiap.lanchonete.domain.Pedido;
 import br.com.fiap.lanchonete.domain.ports.repositories.PedidoRepositoryPort;
 import br.com.fiap.lanchonete.infrastracture.persistence.entidades.*;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Slf4j
 @Component
