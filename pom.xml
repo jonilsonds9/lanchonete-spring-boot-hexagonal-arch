@@ -71,13 +71,6 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
-		<!-- O Lombok é uma biblioteca Java focada em produtividade e redução de código boilerplate -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- Testes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
